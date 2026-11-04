@@ -245,13 +245,9 @@ Ver tráiler [VIDEO]
         <span class="tk">if</span> self.recuerdos_suprimidos:
             print(<span class="ts">"Recuerdos suprimidos"</span>)
 
-    <span class="tk">def</span> <span class="tf">escanear_corteza_prefrontal</span>(self):
-        <span class="ts">"""Escanea la zona del cerebro que maneja la memoria de corto plazo y la personalidad."""</span>
-        print(<span class="ts">"Escaneando corteza prefrontal..."</span>)
-        <span class="tc"># memoria de trabajo: temporal, como la memoria RAM de una computadora</span>
-        print(<span class="ts">"Memoria de trabajo: escaneada"</span>)
-        <span class="tc"># personalidad y conducta: una estructura estable, no se guarda de forma temporal</span>
-        print(<span class="ts">"Personalidad y conducta: estructura estable"</span>)
+    <span class="tk">def</span> <span class="tf">escanear_zona</span>(self, zona):
+        <span class="ts">"""Escanea una zona del cerebro del sujeto."""</span>
+        print(<span class="ts">"Zona "</span> + zona + <span class="ts">": escaneada"</span>)
 
     <span class="tk">def</span> <span class="tf">revisar_voz</span>(self):
         <span class="ts">"""Mira si el sujeto puede hablar."""</span>
@@ -279,7 +275,7 @@ sujeto.revisar_estado()
 time.sleep(1)
 sujeto.revisar_recuerdos()
 time.sleep(1)
-sujeto.escanear_corteza_prefrontal()
+sujeto.escanear_zona(<span class="ts">"prefrontal"</span>)  <span class="tc"># memoria de trabajo (temporal) y personalidad (estable)</span>
 time.sleep(1)
 sujeto.revisar_voz()
 time.sleep(1)
@@ -290,9 +286,7 @@ sujeto.revisar_texto()</code></pre>
 <div data-paso="2" hidden>Sujeto 048: OK</div>
 <div data-paso="2" hidden>Sujeto estable</div>
 <div data-paso="3" hidden>Recuerdos suprimidos</div>
-<div data-paso="4" hidden>Escaneando corteza prefrontal...</div>
-<div data-paso="4" hidden>Memoria de trabajo: escaneada</div>
-<div data-paso="4" hidden>Personalidad y conducta: estructura estable</div>
+<div data-paso="4" hidden>Zona prefrontal: escaneada</div>
 <div data-paso="5" hidden>Voz de Sujeto 048 desactivada</div>
 <div data-paso="6" hidden>Modo de texto activo</div>
 <div aria-hidden="true"><span class="blink">█</span></div>
@@ -310,17 +304,13 @@ sujeto.revisar_texto()</code></pre>
 <div data-paso="1" hidden>Sujeto estable</div>
 <div data-paso="2" hidden>C:\LYO\sujeto_048&gt;recuerdos.exe</div>
 <div data-paso="2" hidden>Recuerdos suprimidos</div>
-<div data-paso="3" hidden>C:\LYO\sujeto_048&gt;corteza_prefrontal.exe</div>
-<div data-paso="3" hidden>Escaneando corteza prefrontal...</div>
-<div data-paso="4" hidden>C:\LYO\sujeto_048&gt;memoria_trabajo.exe</div>
-<div data-paso="4" hidden>Memoria de trabajo: escaneada</div>
-<div data-paso="5" hidden>C:\LYO\sujeto_048&gt;personalidad.exe</div>
-<div data-paso="5" hidden>Personalidad y conducta: estructura estable</div>
-<div data-paso="6" hidden>C:\LYO\sujeto_048&gt;voz.exe</div>
-<div data-paso="6" hidden>Voz de Sujeto 048 desactivada</div>
-<div data-paso="7" hidden>C:\LYO\sujeto_048&gt;texto.exe</div>
-<div data-paso="7" hidden>Modo de texto activo</div>
-<div data-paso="8" hidden>C:\LYO\sujeto_048&gt;<span class="blink">_</span></div>
+<div data-paso="3" hidden>C:\LYO\sujeto_048&gt;escaner.exe --zona=prefrontal</div>
+<div data-paso="3" hidden>Zona prefrontal: escaneada</div>
+<div data-paso="4" hidden>C:\LYO\sujeto_048&gt;voz.exe</div>
+<div data-paso="4" hidden>Voz de Sujeto 048 desactivada</div>
+<div data-paso="5" hidden>C:\LYO\sujeto_048&gt;texto.exe</div>
+<div data-paso="5" hidden>Modo de texto activo</div>
+<div data-paso="6" hidden>C:\LYO\sujeto_048&gt;<span class="blink">_</span></div>
 </div>
 </div>
 </div>

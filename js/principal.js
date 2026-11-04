@@ -230,7 +230,7 @@
     io.observe(el);
   }
   armar(document.getElementById('salida-terminal'), 6, 1000); // versión Python: una línea por segundo (como los time.sleep(1))
-  armar(document.getElementById('salida-cmd'), 8, 900);       // versión CMD (queda oculta hasta que la TV despierta)
+  armar(document.getElementById('salida-cmd'), 6, 900);       // versión CMD (queda oculta hasta que la TV despierta)
 
   function pasarACmd() {
     cmdHecho = true;

@@ -126,7 +126,8 @@
       ultimo = t;
       var r = zona.getBoundingClientRect();
       var p = (window.innerHeight - r.top) / (r.height + window.innerHeight); // 0 → 1 mientras la zona cruza la ventana
-      var fuerza = suave(0.25, 0.55, p) * (1 - suave(0.68, 0.86, p));
+      var pf = r.height / (r.height + window.innerHeight); // p en el que el lienzo deja de pegarse a la ventana
+      var fuerza = suave(0.18, 0.36, p) * (1 - suave(pf - 0.2, pf - 0.03, p));
       if (apagon > 0) { apagon--; fuerza = 0; }
       else if (Math.random() < 0.04) apagon = 1 + Math.floor(Math.random() * 3); // cortes breves
       lienzo.style.opacity = fuerza * (0.55 + Math.random() * 0.45);

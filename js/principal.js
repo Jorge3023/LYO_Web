@@ -25,6 +25,7 @@
   var tv = document.getElementById('tv');
   var actual = 'burlona';
   var temporizador;
+  var estado = 'libre'; // libre | bloqueada (chocó con la pared) | dormida (se quedó atrás) | despertando
 
   function mostrar(cara, susto) {
     actual = cara;
@@ -33,14 +34,17 @@
   }
   function programar(ms, sinSusto) {
     clearTimeout(temporizador);
+    if (estado !== 'libre') return;
     temporizador = setTimeout(function () { paso(sinSusto); }, ms);
   }
   // Cada cambio de cara: con probabilidad PROB_SUSTO% sale una cara aterradora (rápida); si no, una normal
   function paso(sinSusto) {
+    if (estado !== 'libre') return;
     var susto = !reducir && !sinSusto && Math.random() * 100 < PROB_SUSTO;
     var pool = susto ? SUSTOS : NORMALES.filter(function (c) { return c !== actual; });
     var elegida = pool[Math.floor(Math.random() * pool.length)];
     function poner() {
+      if (estado !== 'libre') return;
       mostrar(elegida, susto);
       if (susto) {
         // se queda un momento, vuelve la estática y regresa a una cara normal
@@ -60,30 +64,29 @@
 
   // ---------- La chica TV se puede arrastrar (mouse o dedo) y recuerda dónde la dejaste ----------
   var caja = tv && tv.parentNode;
+  function izq() { return parseFloat(getComputedStyle(caja).left) || 0; }
+  function arr() { return parseFloat(getComputedStyle(caja).top) || 0; }
+  function colocar(x, y) {
+    var w = caja.offsetWidth, h = caja.offsetHeight;
+    caja.style.left = Math.min(Math.max(x, 0), Math.max(0, window.innerWidth - w)) + 'px';
+    caja.style.top = Math.min(Math.max(y, 0), Math.max(0, window.innerHeight - h)) + 'px';
+  }
+  function guardar() {
+    try { localStorage.setItem('lyo_tv', JSON.stringify([izq() / window.innerWidth, arr() / window.innerHeight])); } catch (e) {}
+  }
   if (caja) {
     var pos = null; // posición en fracciones de la ventana: [x, y]
     try { pos = JSON.parse(localStorage.getItem('lyo_tv')); } catch (e) {}
-    function limitar(x, y) {
-      var w = caja.offsetWidth, h = caja.offsetHeight;
-      return [Math.min(Math.max(x, 0), Math.max(0, window.innerWidth - w)),
-              Math.min(Math.max(y, 0), Math.max(0, window.innerHeight - h))];
-    }
-    function colocar(x, y) {
-      var p = limitar(x, y);
-      caja.style.left = p[0] + 'px';
-      caja.style.top = p[1] + 'px';
-    }
-    function guardar() {
-      try { localStorage.setItem('lyo_tv', JSON.stringify([caja.offsetLeft / window.innerWidth, caja.offsetTop / window.innerHeight])); } catch (e) {}
-    }
     if (pos && pos.length === 2) colocar(pos[0] * window.innerWidth, pos[1] * window.innerHeight);
-    window.addEventListener('resize', function () { colocar(caja.offsetLeft, caja.offsetTop); });
+    window.addEventListener('resize', function () { colocar(izq(), arr()); pedirBarrera(); });
 
     var dx = 0, dy = 0, inicio = null, movio = false;
     tv.addEventListener('pointerdown', function (e) {
+      var r = caja.getBoundingClientRect(); // posición que se ve (puede estar empujada por la barrera)
+      colocar(r.left, r.top);
+      dx = e.clientX - r.left;
+      dy = e.clientY - r.top;
       inicio = [e.clientX, e.clientY];
-      dx = e.clientX - caja.offsetLeft;
-      dy = e.clientY - caja.offsetTop;
       movio = false;
       tv.setPointerCapture(e.pointerId);
       caja.classList.add('arrastrando');
@@ -92,7 +95,10 @@
     tv.addEventListener('pointermove', function (e) {
       if (!inicio) return;
       if (Math.abs(e.clientX - inicio[0]) + Math.abs(e.clientY - inicio[1]) > 4) movio = true;
-      colocar(e.clientX - dx, e.clientY - dy);
+      var y = e.clientY - dy;
+      if (zona) y = Math.min(y, zona.getBoundingClientRect().top - caja.offsetHeight); // no se puede arrastrar más allá de la barrera
+      colocar(e.clientX - dx, y);
+      barrera();
     });
     function soltar() {
       if (!inicio) return;
@@ -154,30 +160,83 @@
     }
   }
 
+  // ---------- Barrera invisible: la TV no puede entrar a la zona de la estática ----------
+  // Si el usuario baja, la TV se queda parada en la pared (sobre la página); al volver a subir sigue ahí, dormida,
+  // y al despertar la terminal cambia a CMD.
+  var cmdHecho = false, tDespertar = null, pendiente = false;
+  function pedirBarrera() {
+    if (pendiente) return;
+    pendiente = true;
+    requestAnimationFrame(function () { pendiente = false; barrera(); });
+  }
+  window.addEventListener('scroll', pedirBarrera, { passive: true });
+  function tocaBarrera(yB) { return arr() + caja.offsetHeight >= yB - 0.5; }
+  function extrano() {
+    mostrar('sorpresa', !reducir); // se queda pasmada al chocar con la pared invisible
+    setTimeout(function () { if (estado === 'bloqueada') tv.className = 'tvbob'; }, 400);
+  }
+  function barrera() {
+    if (!caja || !zona) return;
+    var h = caja.offsetHeight;
+    var yB = zona.getBoundingClientRect().top; // la pared, en coordenadas de la ventana
+    var desp = Math.min(0, yB - h - arr());    // cuánto la empuja la pared hacia arriba
+    caja.style.transform = desp < 0 ? 'translateY(' + desp + 'px)' : '';
+    var toca = tocaBarrera(yB);
+    if (estado === 'libre' && toca) { estado = 'bloqueada'; clearTimeout(temporizador); extrano(); }
+    else if (estado === 'bloqueada' && !toca) { estado = 'libre'; programar(900, true); }
+    if (yB < 0) { // el usuario siguió bajando: la TV queda atrás, fuera de la ventana, y se duerme
+      if (estado === 'libre' || estado === 'bloqueada') { estado = 'dormida'; clearTimeout(temporizador); mostrar('dormida', false); }
+      if (tDespertar) { clearTimeout(tDespertar); tDespertar = null; }
+    } else if (estado === 'dormida' && !tDespertar && yB > h * 0.6) { // volvió a subir y la ve dormida
+      tDespertar = setTimeout(despertar, 2400);
+    }
+  }
+  function despertar() {
+    tDespertar = null;
+    estado = 'despertando';
+    mostrar('estatica', false);
+    setTimeout(function () {
+      mostrar('sorpresa', false);
+      setTimeout(function () {
+        mostrar('picara', false);
+        if (!cmdHecho) pasarACmd();
+        setTimeout(function () {
+          estado = tocaBarrera(zona.getBoundingClientRect().top) ? 'bloqueada' : 'libre';
+          if (estado === 'libre') programar(2500, true);
+          barrera();
+        }, 1300);
+      }, 800);
+    }, 140);
+  }
+  barrera();
+
   // ---------- Terminal: la salida se escribe línea por línea al llegar a ella ----------
-  // (una línea por segundo, igual que los time.sleep(1) del código que se ve arriba)
-  var salida = document.getElementById('salida-terminal');
-  function mostrarPaso(k) {
-    var lineas = salida.querySelectorAll('[data-paso]');
-    for (var i = 0; i < lineas.length; i++) {
-      if (Number(lineas[i].getAttribute('data-paso')) <= k) lineas[i].hidden = false;
+  function armar(el, max, ms) {
+    if (!el) return;
+    function mostrarPaso(k) {
+      var lineas = el.querySelectorAll('[data-paso]');
+      for (var i = 0; i < lineas.length; i++) {
+        if (Number(lineas[i].getAttribute('data-paso')) <= k) lineas[i].hidden = false;
+      }
     }
-  }
-  function imprimir(k) {
-    mostrarPaso(k);
-    if (k < 5) setTimeout(function () { imprimir(k + 1); }, 1000);
-  }
-  if (salida) {
-    if (reducir || !('IntersectionObserver' in window)) {
-      mostrarPaso(5);
-    } else {
-      var io = new IntersectionObserver(function (entradas) {
-        if (entradas.some(function (e) { return e.isIntersecting; })) {
-          io.disconnect();
-          imprimir(1);
-        }
-      }, { threshold: 0.3 });
-      io.observe(salida);
+    function imprimir(k) {
+      mostrarPaso(k);
+      if (k < max) setTimeout(function () { imprimir(k + 1); }, ms);
     }
+    if (reducir || !('IntersectionObserver' in window)) { mostrarPaso(max); return; }
+    var io = new IntersectionObserver(function (entradas) {
+      if (entradas.some(function (e) { return e.isIntersecting; })) { io.disconnect(); imprimir(1); }
+    }, { threshold: 0.3 });
+    io.observe(el);
+  }
+  armar(document.getElementById('salida-terminal'), 5, 1000); // versión Python: una línea por segundo (como los time.sleep(1))
+  armar(document.getElementById('salida-cmd'), 9, 800);       // versión CMD (queda oculta hasta que la TV despierta)
+
+  function pasarACmd() {
+    cmdHecho = true;
+    var py = document.getElementById('term-py'), cmd = document.getElementById('term-cmd');
+    if (!py || !cmd) return;
+    py.hidden = true;
+    cmd.hidden = false;
   }
 })();

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<!--
+  ¿Intentas buscar algo pequeño, Sherlock Holmes?
+  Me intriga tu curiosidad. Sigue buscando, solo recuerda que...
+
+  La curiosidad mató al gato,
+  01110000 01100101 01110010 01101111 00100000 01101100 01100001 00100000 01110011 01100001 01110100 01101001 01110011 01100110 01100001 01100011 01100011 01101001 11000011 10110011 01101110 00100000 01101100 01101111 00100000 01110100 01110010 01100001 01101010 01101111 00100000 01100100 01100101 00100000 01110110 01110101 01100101 01101100 01110100 01100001
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#050608">
+<title>LYO</title>
+<link rel="icon" href="assets/caras/burlona.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<div style="font-family:'Hanken Grotesk',system-ui,sans-serif;color:#E8ECF2;position:relative">
+
+<!-- Fondo: el código del menú cayendo en cuatro columnas -->
+<div aria-hidden="true" style="position:fixed;inset:0;z-index:0;overflow:hidden;background:#050608">
+<div class="bgflick" style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));filter:brightness(0.82)">
+<div class="col col1" style="animation-duration:62s;animation-delay:-10s"></div>
+<div class="col col2" style="animation-duration:38s;animation-delay:-31s"></div>
+<div class="col col3" style="animation-duration:80s;animation-delay:-5s"></div>
+<div class="col col4" style="animation-duration:24s;animation-delay:-17s"></div>
+</div>
+<div class="tear tearA">
+<div class="col col1" style="animation-duration:62s;animation-delay:-10s"></div>
+<div class="col col2" style="animation-duration:38s;animation-delay:-31s"></div>
+<div class="col col3" style="animation-duration:80s;animation-delay:-5s"></div>
+<div class="col col4" style="animation-duration:24s;animation-delay:-17s"></div>
+</div>
+<div class="tear tearB">
+<div class="col col1" style="animation-duration:62s;animation-delay:-10s"></div>
+<div class="col col2" style="animation-duration:38s;animation-delay:-31s"></div>
+<div class="col col3" style="animation-duration:80s;animation-delay:-5s"></div>
+<div class="col col4" style="animation-duration:24s;animation-delay:-17s"></div>
+</div>
+<div style="position:absolute;inset:0;background:rgba(0,0,0,0.5)"></div>
+<div class="scan" style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,0.28) 0 1px,transparent 1px 3px)"></div>
+<div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 40%,rgba(0,0,0,0.78) 100%)"></div>
+</div>
+
+<div style="position:relative;z-index:1">
+
+<!-- Barra superior -->
+<header style="background:rgba(11,11,16,0.82);border-bottom:1px solid #2C2C3A">
+<div style="max-width:1160px;margin:0 auto;padding:14px 32px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between">
+<a href="#inicio" class="nav-a" style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-weight:500;font-size:20px;letter-spacing:0.3em;color:#E0EBE6">LYO</a>
+<nav aria-label="Principal" style="display:flex;flex-wrap:wrap;gap:8px 24px;font-size:15px;font-weight:500">
+<a href="#acerca" class="nav-a">Acerca de</a>
+<a href="#archivos" class="nav-a">Archivos</a>
+<a href="#devlog" class="nav-a">Devlog</a>
+<a href="#comentarios" class="nav-a">Comentarios</a>
+</nav>
+</div>
+</header>
+
+<!-- Título: igual que en el menú, con las copias roja y cian -->
+<section id="inicio" style="max-width:1160px;margin:0 auto;padding:96px 32px 40px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center">
+<h1 aria-label="LYO" style="position:relative;margin:0;font-family:'IBM Plex Mono',ui-monospace,monospace;font-weight:500;font-size:clamp(72px,15vw,200px);line-height:1;white-space:nowrap">
+<span aria-hidden="true" class="tred" style="position:absolute;left:0;top:0;color:rgba(230,38,38,0.55)">L Y O</span>
+<span aria-hidden="true" class="tcyan" style="position:absolute;left:0;top:0;color:rgba(26,217,217,0.55)">L Y O</span>
+<span aria-hidden="true" class="twhite" style="position:relative;color:#E0EBE6">L Y O</span>
+</h1>
+<p style="margin:0;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:18px;line-height:1.5;color:#B8C7BD;max-width:34em;text-wrap:pretty">No recuerdo cómo llegué aquí.</p>
+</section>
+
+<!-- Cuerpo -->
+<div style="max-width:1160px;margin:0 auto;padding:32px 32px 96px;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+
+<main style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:56px">
+
+<!-- Tráiler y capturas -->
+<section aria-label="Tráiler y capturas" style="display:flex;flex-direction:column;gap:12px">
+<div style="position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:rgba(20,20,28,0.9);border:1px solid #2C2C3A;display:flex;align-items:center;justify-content:center">
+<div aria-hidden="true" class="scan" style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,0.04) 0 2px,transparent 2px 4px)"></div>
+<button type="button" aria-label="Reproducir tráiler" style="position:relative;display:flex;align-items:center;gap:14px;background:var(--acento);color:#0B0B10;border:0;font-family:inherit;font-weight:800;font-size:18px;padding:16px 28px;border-radius:999px;cursor:pointer">
+<svg aria-hidden="true" width="18" height="20" viewBox="0 0 18 20"><path d="M2 1.5v17l15-8.5z" fill="#0B0B10"/></svg>
+Ver tráiler [VIDEO]
+</button>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(130px,100%),1fr));gap:12px">
+<div style="aspect-ratio:16/9;border-radius:8px;background:rgba(20,20,28,0.9);border:1px dashed #44445A;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#9AA3B2">[CAPTURA 1]</div>
+<div style="aspect-ratio:16/9;border-radius:8px;background:rgba(20,20,28,0.9);border:1px dashed #44445A;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#9AA3B2">[CAPTURA 2]</div>
+<div style="aspect-ratio:16/9;border-radius:8px;background:#05060A;border:1px solid #2C2C3A;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#9AA3B2">SIN SEÑAL</div>
+<div style="aspect-ratio:16/9;border-radius:8px;background:#05060A;border:1px solid #2C2C3A;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#9AA3B2">SIN SEÑAL</div>
+</div>
+</section>
+
+<!-- Acerca de -->
+<section id="acerca" style="display:flex;flex-direction:column;gap:20px;font-size:17px;line-height:1.65;color:#C9D1DB">
+<h2 style="margin:0;font-size:28px;font-weight:800;color:#FFFFFF">Acerca de LYO</h2>
+<p style="margin:0;text-wrap:pretty">Hay un lugar. Hay alguien. Hay algo que no encaja.</p>
+<p style="margin:0;text-wrap:pretty">El resto lo irás descubriendo.</p>
+<h3 style="margin:12px 0 0;font-size:20px;font-weight:800;color:#FFFFFF">Lo que sí podemos decirte</h3>
+<ul style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px">
+<li>Se juega en primera persona.</li>
+<li>Disparas con la mano derecha. Con la izquierda, desvías.</li>
+<li>Ninguna partida es igual a la anterior.</li>
+<li>Hay más de un final.</li>
+</ul>
+</section>
+
+<!-- Archivos (huecos para ir revelando la historia) -->
+<section id="archivos" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px">
+<h2 style="margin:0;font-size:28px;font-weight:800;color:#FFFFFF">Archivos</h2>
+<span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;color:#9AA3B2">0 / [TOTAL] DESBLOQUEADOS</span>
+</div>
+<div style="display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:18px 0;border-top:1px solid #2C2C3A">
+<span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px;color:#9AA3B2;min-width:3em">01</span>
+<span role="img" aria-label="Texto oculto" style="flex:1 1 200px;height:16px;border-radius:3px;background:#242432;max-width:320px"></span>
+<span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:0.06em;color:#9AA3B2">SIN DESBLOQUEAR</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:18px 0;border-top:1px solid #2C2C3A">
+<span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px;color:#9AA3B2;min-width:3em">02</span>
+<span role="img" aria-label="Texto oculto" style="flex:1 1 200px;height:16px;border-radius:3px;background:#242432;max-width:220px"></span>
+<span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:0.06em;color:#9AA3B2">SIN DESBLOQUEAR</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:18px 0;border-top:1px solid #2C2C3A;border-bottom:1px solid #2C2C3A">
+<span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px;color:#9AA3B2;min-width:3em">03</span>
+<span role="img" aria-label="Texto oculto" style="flex:1 1 200px;height:16px;border-radius:3px;background:#242432;max-width:280px"></span>
+<span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:0.06em;color:#9AA3B2">SIN DESBLOQUEAR</span>
+</div>
+</div>
+</section>
+
+<!-- Devlog -->
+<section id="devlog" style="display:flex;flex-direction:column;gap:16px">
+<h2 style="margin:0;font-size:28px;font-weight:800;color:#FFFFFF">Devlog</h2>
+<div style="display:flex;flex-direction:column">
+<a href="#devlog" class="nav-a" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;padding:18px 0;border-top:1px solid #2C2C3A">
+<span style="font-weight:700;font-size:18px;color:#FFFFFF">[TÍTULO DEL DEVLOG 1]</span>
+<span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;color:#9AA3B2">[FECHA]</span>
+</a>
+<a href="#devlog" class="nav-a" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;padding:18px 0;border-top:1px solid #2C2C3A;border-bottom:1px solid #2C2C3A">
+<span style="font-weight:700;font-size:18px;color:#FFFFFF">[TÍTULO DEL DEVLOG 2]</span>
+<span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;color:#9AA3B2">[FECHA]</span>
+</a>
+</div>
+</section>
+
+<!-- Comentarios -->
+<section id="comentarios" style="display:flex;flex-direction:column;gap:16px">
+<h2 style="margin:0;font-size:28px;font-weight:800;color:#FFFFFF">Comentarios</h2>
+<div style="display:flex;flex-direction:column;gap:10px">
+<label for="comentario" style="font-size:15px;font-weight:500">Escribe un comentario</label>
+<textarea id="comentario" rows="4" style="background:#14141C;color:#E8ECF2;border:1px solid #44445A;border-radius:10px;padding:14px 16px;font-family:inherit;font-size:16px;resize:vertical"></textarea>
+<div style="display:flex;justify-content:flex-end">
+<button type="button" class="btn-a" style="background:var(--acento);color:#0B0B10;border:0;font-family:inherit;font-weight:800;font-size:16px;padding:12px 24px;border-radius:999px;cursor:pointer">Publicar</button>
+</div>
+</div>
+<p style="margin:0;font-size:16px;color:#9AA3B2">Aún no hay comentarios. Sé el primero.</p>
+</section>
+</main>
+
+<!-- Barra lateral -->
+<aside style="flex:1 1 320px;max-width:380px;min-width:0;display:flex;flex-direction:column;gap:24px">
+
+<section aria-label="Descarga" style="background:rgba(20,20,28,0.94);border:1px solid #2C2C3A;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+<span style="font-weight:800;font-size:26px;color:#FFFFFF">[PRECIO / GRATIS]</span>
+<span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#9AA3B2">DEMO</span>
+</div>
+<a href="#" class="btn-a" style="background:var(--acento);color:#0B0B10;text-decoration:none;text-align:center;font-weight:800;font-size:18px;padding:16px 24px;border-radius:999px">Descargar</a>
+<div style="display:flex;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid #2C2C3A;font-size:14px">
+<span style="color:#FFFFFF;font-weight:500">LYO_demo_win.zip</span>
+<span style="font-family:'IBM Plex Mono',ui-monospace,monospace;color:#9AA3B2">[TAMAÑO]</span>
+</div>
+</section>
+
+<section aria-label="Información" style="background:rgba(20,20,28,0.94);border:1px solid #2C2C3A;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:14px;font-size:15px">
+<div style="display:grid;grid-template-columns:auto 1fr;gap:12px 20px;align-items:center">
+<span style="color:#9AA3B2">Estado</span><span>En desarrollo</span>
+<span style="color:#9AA3B2">Plataformas</span><span>Windows [por confirmar]</span>
+<span style="color:#9AA3B2">Autor</span><span>[Tu nombre]</span>
+<span style="color:#9AA3B2">Género</span><span>Acción</span>
+<span style="color:#9AA3B2">Historia</span><span role="img" aria-label="Información oculta" style="display:block;height:14px;border-radius:3px;background:#242432;max-width:150px"></span>
+<span style="color:#9AA3B2">Duración</span><span>[por definir]</span>
+<span style="color:#9AA3B2">Valoración</span><span>Sin valoraciones aún</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;padding-top:12px;border-top:1px solid #2C2C3A">
+<span class="chip">Primera persona</span>
+<span class="chip">Acción</span>
+<span class="chip">Narrativa</span>
+<span class="chip" role="img" aria-label="Etiqueta oculta" style="color:#242432;background:#242432;border-color:#242432;user-select:none">██████</span>
+<span class="chip" role="img" aria-label="Etiqueta oculta" style="color:#242432;background:#242432;border-color:#242432;user-select:none">████████</span>
+</div>
+</section>
+</aside>
+</div>
+
+<!-- Pie -->
+<footer style="border-top:1px solid #2C2C3A;background:rgba(5,6,8,0.8)">
+<div style="max-width:1160px;margin:0 auto;padding:32px 32px 120px;display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:0.04em;color:#9AA3B2">
+<span>© [AÑO] LYO</span>
+<span>Si algo no carga, no es un error. [CÓDIGO OCULTO]</span>
+</div>
+</footer>
+
+<!-- Descenso: el fondo se apaga mientras se baja -->
+<div aria-hidden="true" style="height:1200px;background:linear-gradient(180deg,rgba(5,6,8,0) 0%,rgba(5,6,8,0.85) 45%,#050608 80%)"></div>
+
+<!-- Terminal -->
+<section aria-label="Terminal" style="background:#050608;padding:0 32px 200px">
+<div style="max-width:880px;margin:0 auto">
+<div style="border:1px solid #2C2C3A;border-radius:10px;background:#0B0D10;overflow:hidden">
+<div style="display:flex;justify-content:space-between;gap:16px;padding:12px 20px;border-bottom:1px solid #2C2C3A;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:0.06em;color:#9AA3B2">
+<span>sujeto_048.py</span>
+<span>PYTHON</span>
+</div>
+<pre role="region" aria-label="Código del programa" tabindex="0" style="margin:0;padding:24px 28px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px;line-height:1.65;color:#C9D1DB;tab-size:4"><code><span class="tk">import</span> time
+
+<span class="tk">class</span> <span class="tf">Sujeto</span>:
+    <span class="ts">"""Una persona dentro del sistema."""</span>
+
+    <span class="tk">def</span> <span class="tf">__init__</span>(self, numero):
+        self.numero = numero              <span class="tc"># su número de sujeto</span>
+        self.estable = <span class="tn">True</span>               <span class="tc"># ¿está bien? Sí</span>
+        self.recuerdos_suprimidos = <span class="tn">True</span>  <span class="tc"># ¿sus recuerdos fueron borrados? Sí</span>
+        self.voz_activa = <span class="tn">False</span>           <span class="tc"># ¿puede hablar? No</span>
+        self.modo_texto = <span class="tn">False</span>           <span class="tc"># ¿se comunica solo con texto?</span>
+
+    <span class="tk">def</span> <span class="tf">revisar_estado</span>(self):
+        <span class="ts">"""Mira si el sujeto está bien."""</span>
+        <span class="tk">if</span> self.estable:
+            print(<span class="ts">"Sujeto "</span> + self.numero + <span class="ts">": OK"</span>)
+            print(<span class="ts">"Sujeto estable"</span>)
+        <span class="tk">else</span>:
+            print(<span class="ts">"Sujeto "</span> + self.numero + <span class="ts">": ALERTA"</span>)
+
+    <span class="tk">def</span> <span class="tf">revisar_recuerdos</span>(self):
+        <span class="ts">"""Mira si el sujeto todavía recuerda cosas."""</span>
+        <span class="tk">if</span> self.recuerdos_suprimidos:
+            print(<span class="ts">"Recuerdos suprimidos"</span>)
+
+    <span class="tk">def</span> <span class="tf">revisar_voz</span>(self):
+        <span class="ts">"""Mira si el sujeto puede hablar."""</span>
+        <span class="tk">if</span> <span class="tk">not</span> self.voz_activa:
+            print(<span class="ts">"Voz de Sujeto "</span> + self.numero + <span class="ts">" desactivada"</span>)
+            self.modo_texto = <span class="tn">True</span>        <span class="tc"># si no puede hablar, solo escribe</span>
+
+    <span class="tk">def</span> <span class="tf">revisar_texto</span>(self):
+        <span class="ts">"""Mira cómo se comunica el sujeto."""</span>
+        <span class="tk">if</span> self.modo_texto:
+            print(<span class="ts">"Modo de texto activo"</span>)
+
+<span class="tc"># ==========================================</span>
+<span class="tc"># REVISIÓN DEL SUJETO</span>
+<span class="tc"># ==========================================</span>
+
+<span class="tc"># 1. Buscar al sujeto en el sistema</span>
+sujeto = Sujeto(<span class="ts">"048"</span>)
+
+<span class="tc"># 2. Revisar todo, una cosa a la vez</span>
+print(<span class="ts">"Iniciando revisión..."</span>)
+time.sleep(1)
+
+sujeto.revisar_estado()
+time.sleep(1)
+sujeto.revisar_recuerdos()
+time.sleep(1)
+sujeto.revisar_voz()
+time.sleep(1)
+sujeto.revisar_texto()</code></pre>
+<div id="salida-terminal" style="border-top:1px solid #2C2C3A;padding:20px 28px 24px;min-height:230px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px;line-height:1.7;color:#E0EBE6">
+<div style="color:#808F85">$ python sujeto_048.py</div>
+<div data-paso="1" hidden>Iniciando revisión...</div>
+<div data-paso="2" hidden>Sujeto 048: OK</div>
+<div data-paso="2" hidden>Sujeto estable</div>
+<div data-paso="3" hidden>Recuerdos suprimidos</div>
+<div data-paso="4" hidden>Voz de Sujeto 048 desactivada</div>
+<div data-paso="5" hidden>Modo de texto activo</div>
+<div aria-hidden="true"><span class="blink">█</span></div>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+
+<!-- La chica TV: asoma desde abajo a la derecha, fija en la ventana -->
+<div class="tv" aria-hidden="true">
+<img id="tv" src="assets/caras/burlona.webp" alt="" class="tvbob">
+</div>
+
+</div>
+
+<script src="js/principal.js" defer></script>
+</body>
+</html>

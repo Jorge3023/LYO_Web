@@ -1,0 +1,52 @@
+/* LYO — estilos de la página principal */
+
+:root { --acento: #E0EBE6; }  /* color de los botones; cámbialo aquí */
+
+body { margin: 0; background: #050608; }
+a { color: #E0EBE6; text-decoration: underline; text-underline-offset: 3px; }
+a:hover { color: #FFFFFF; }
+.btn-a:hover { filter: brightness(1.12); }
+.nav-a { color: #C9D1DB; text-decoration: none; }
+.nav-a:hover { color: #FFFFFF; text-decoration: underline; }
+.chip { display: inline-block; background: #1C1C27; border: 1px solid #34344A; color: #E8ECF2; border-radius: 6px; padding: 6px 10px; font-size: 13px; text-decoration: none; }
+
+/* ---------- Fondo: el código del menú cayendo en cuatro columnas ---------- */
+.col { background-image: url(../assets/fondo_codigo.jpg); background-size: 25vw auto; background-repeat: repeat; animation-name: fall; animation-timing-function: linear; animation-iteration-count: infinite; }
+.col2, .col4 { transform: scaleX(-1); }
+@keyframes fall { from { background-position-y: 0; } to { background-position-y: 44.444vw; } }
+@keyframes scan { from { background-position: 0 0; } to { background-position: 0 8px; } }
+@keyframes bgflick { 0%, 100% { opacity: 1; } 48% { opacity: 0.93; } 52% { opacity: 1; } }
+.bgflick { animation: bgflick 3.4s steps(1) infinite; }
+.scan { animation: scan 0.8s linear infinite; }
+
+/* Glitch: franjas horizontales de la misma imagen que saltan de lado (cian y rojo) */
+@keyframes tearA { 0%, 92%, 97%, 100% { opacity: 0; } 92.4% { opacity: 1; clip-path: inset(22% 0 68% 0); translate: -46px 0; } 93.6% { opacity: 1; clip-path: inset(55% 0 38% 0); translate: 38px 0; } 94.8% { opacity: 1; clip-path: inset(8% 0 86% 0); translate: -24px 0; } 96% { opacity: 1; clip-path: inset(74% 0 18% 0); translate: 52px 0; } }
+@keyframes tearB { 0%, 81%, 86%, 100% { opacity: 0; } 81.4% { opacity: 1; clip-path: inset(40% 0 52% 0); translate: 34px 0; } 82.6% { opacity: 1; clip-path: inset(12% 0 80% 0); translate: -42px 0; } 83.8% { opacity: 1; clip-path: inset(66% 0 26% 0); translate: 26px 0; } 85% { opacity: 1; clip-path: inset(30% 0 62% 0); translate: -30px 0; } }
+.tear { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); opacity: 0; animation-timing-function: steps(1, end); animation-iteration-count: infinite; }
+.tearA { animation-name: tearA; animation-duration: 7s; animation-delay: -2s; filter: sepia(1) hue-rotate(150deg) saturate(6) brightness(2.6); }
+.tearB { animation-name: tearB; animation-duration: 11s; animation-delay: -6s; filter: sepia(1) hue-rotate(-38deg) saturate(6) brightness(2.6); }
+
+/* ---------- Título con copias roja y cian ---------- */
+@keyframes tred { 0%, 100% { translate: 0 0; } 25% { translate: -1.5px 0; } 50% { translate: 0 0; } 75% { translate: -1px 0; } 93% { translate: -1px 0; } 94% { translate: -14px 2px; } 96% { translate: -8px -3px; } 97% { translate: -1px 0; } }
+@keyframes tcyan { 0%, 100% { translate: 0 0; } 25% { translate: 1.5px 0; } 50% { translate: 0 0; } 75% { translate: 1px 0; } 93% { translate: 1px 0; } 94% { translate: 14px -2px; } 96% { translate: 8px 3px; } 97% { translate: 1px 0; } }
+@keyframes twhite { 0%, 93%, 100% { opacity: 1; } 94% { opacity: 0; } 95% { opacity: 1; } 96% { opacity: 0.3; } 97% { opacity: 1; } }
+.tred { animation: tred 5s infinite; }
+.tcyan { animation: tcyan 5s infinite; }
+.twhite { animation: twhite 5s infinite; }
+
+/* ---------- La chica TV (abajo a la derecha, fija en la ventana) ---------- */
+.tv { position: fixed; right: clamp(4px, 2vw, 28px); bottom: 0; width: clamp(120px, 15vw, 200px); z-index: 30; pointer-events: none; transform: translateY(10%); }
+.tv img { display: block; width: 100%; height: auto; filter: drop-shadow(0 0 16px rgba(0, 0, 0, 0.7)); }
+@keyframes tvbob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -5px; } }
+@keyframes tvshake { 0%, 100% { translate: 0 0; } 20% { translate: -4px 2px; } 40% { translate: 5px -2px; } 60% { translate: -3px -1px; } 80% { translate: 4px 1px; } }
+.tvbob { animation: tvbob 4.5s ease-in-out infinite; }
+.tvshake { animation: tvshake 0.12s linear infinite; }
+
+/* ---------- Terminal ---------- */
+@keyframes blink { 50% { opacity: 0; } }
+.blink { animation: blink 1.1s steps(1) infinite; }
+.tk { color: #5FE3E3; } .ts { color: #E0EBE6; } .tc { color: #808F85; } .tn { color: #FF9A9A; } .tf { color: #FFFFFF; font-weight: 500; }
+
+@media (prefers-reduced-motion: reduce) {
+  .col, .bgflick, .tear, .scan, .tred, .tcyan, .twhite, .tvbob, .tvshake, .blink { animation: none !important; }
+}

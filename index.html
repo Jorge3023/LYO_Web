@@ -245,6 +245,14 @@ Ver tráiler [VIDEO]
         <span class="tk">if</span> self.recuerdos_suprimidos:
             print(<span class="ts">"Recuerdos suprimidos"</span>)
 
+    <span class="tk">def</span> <span class="tf">escanear_corteza_prefrontal</span>(self):
+        <span class="ts">"""Escanea la zona del cerebro que maneja la memoria de corto plazo y la personalidad."""</span>
+        print(<span class="ts">"Escaneando corteza prefrontal..."</span>)
+        <span class="tc"># memoria de trabajo: temporal, como la memoria RAM de una computadora</span>
+        print(<span class="ts">"Memoria de trabajo: escaneada"</span>)
+        <span class="tc"># personalidad y conducta: una estructura estable, no se guarda de forma temporal</span>
+        print(<span class="ts">"Personalidad y conducta: estructura estable"</span>)
+
     <span class="tk">def</span> <span class="tf">revisar_voz</span>(self):
         <span class="ts">"""Mira si el sujeto puede hablar."""</span>
         <span class="tk">if</span> <span class="tk">not</span> self.voz_activa:
@@ -271,6 +279,8 @@ sujeto.revisar_estado()
 time.sleep(1)
 sujeto.revisar_recuerdos()
 time.sleep(1)
+sujeto.escanear_corteza_prefrontal()
+time.sleep(1)
 sujeto.revisar_voz()
 time.sleep(1)
 sujeto.revisar_texto()</code></pre>
@@ -280,8 +290,11 @@ sujeto.revisar_texto()</code></pre>
 <div data-paso="2" hidden>Sujeto 048: OK</div>
 <div data-paso="2" hidden>Sujeto estable</div>
 <div data-paso="3" hidden>Recuerdos suprimidos</div>
-<div data-paso="4" hidden>Voz de Sujeto 048 desactivada</div>
-<div data-paso="5" hidden>Modo de texto activo</div>
+<div data-paso="4" hidden>Escaneando corteza prefrontal...</div>
+<div data-paso="4" hidden>Memoria de trabajo: escaneada</div>
+<div data-paso="4" hidden>Personalidad y conducta: estructura estable</div>
+<div data-paso="5" hidden>Voz de Sujeto 048 desactivada</div>
+<div data-paso="6" hidden>Modo de texto activo</div>
 <div aria-hidden="true"><span class="blink">█</span></div>
 </div>
 </div>
@@ -297,11 +310,15 @@ sujeto.revisar_texto()</code></pre>
 <div data-paso="2" hidden>Sujeto estable</div>
 <div data-paso="3" hidden>C:\LYO\sujeto_048&gt;type recuerdos.txt</div>
 <div data-paso="4" hidden>Recuerdos suprimidos</div>
-<div data-paso="5" hidden>C:\LYO\sujeto_048&gt;type voz.txt</div>
-<div data-paso="6" hidden>Voz de Sujeto 048 desactivada</div>
-<div data-paso="7" hidden>C:\LYO\sujeto_048&gt;type texto.txt</div>
-<div data-paso="8" hidden>Modo de texto activo</div>
-<div data-paso="9" hidden>C:\LYO\sujeto_048&gt;<span class="blink">_</span></div>
+<div data-paso="5" hidden>C:\LYO\sujeto_048&gt;escanear corteza_prefrontal</div>
+<div data-paso="6" hidden>Escaneando corteza prefrontal...</div>
+<div data-paso="6" hidden>Memoria de trabajo: escaneada</div>
+<div data-paso="6" hidden>Personalidad y conducta: estructura estable</div>
+<div data-paso="7" hidden>C:\LYO\sujeto_048&gt;type voz.txt</div>
+<div data-paso="8" hidden>Voz de Sujeto 048 desactivada</div>
+<div data-paso="9" hidden>C:\LYO\sujeto_048&gt;type texto.txt</div>
+<div data-paso="10" hidden>Modo de texto activo</div>
+<div data-paso="11" hidden>C:\LYO\sujeto_048&gt;<span class="blink">_</span></div>
 </div>
 </div>
 </div>

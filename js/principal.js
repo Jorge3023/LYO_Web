@@ -229,8 +229,8 @@
     }, { threshold: 0.3 });
     io.observe(el);
   }
-  armar(document.getElementById('salida-terminal'), 5, 1000); // versión Python: una línea por segundo (como los time.sleep(1))
-  armar(document.getElementById('salida-cmd'), 9, 800);       // versión CMD (queda oculta hasta que la TV despierta)
+  armar(document.getElementById('salida-terminal'), 6, 1000); // versión Python: una línea por segundo (como los time.sleep(1))
+  armar(document.getElementById('salida-cmd'), 11, 800);       // versión CMD (queda oculta hasta que la TV despierta)
 
   function pasarACmd() {
     cmdHecho = true;

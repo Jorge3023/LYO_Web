@@ -205,8 +205,12 @@ Ver tráiler [VIDEO]
 </div>
 </footer>
 
-<!-- Descenso: el fondo se apaga mientras se baja -->
-<div aria-hidden="true" style="height:1200px;background:linear-gradient(180deg,rgba(5,6,8,0) 0%,rgba(5,6,8,0.85) 45%,#050608 80%)"></div>
+<!-- Descenso: el fondo se apaga poco a poco mientras se baja -->
+<div aria-hidden="true" style="height:2200px;background:linear-gradient(180deg,rgba(5,6,8,0) 0%,rgba(5,6,8,0.6) 25%,rgba(5,6,8,0.95) 55%,#050608 80%)"></div>
+<!-- Vacío: todo negro -->
+<div aria-hidden="true" style="height:1400px;background:#050608"></div>
+<!-- Estática: aparece, se corta y vuelve a quedar negro justo antes de la terminal -->
+<div id="zona-estatica" aria-hidden="true"><canvas id="estatica" width="192" height="108"></canvas></div>
 
 <!-- Terminal -->
 <section aria-label="Terminal" style="background:#050608;padding:0 32px 200px">
@@ -286,9 +290,9 @@ sujeto.revisar_texto()</code></pre>
 
 </div>
 
-<!-- La chica TV: asoma desde abajo a la derecha, fija en la ventana -->
+<!-- La chica TV: fija en la ventana, arriba a la izquierda; se puede arrastrar con el mouse o el dedo -->
 <div class="tv" aria-hidden="true">
-<img id="tv" src="assets/caras/burlona.webp" alt="" class="tvbob">
+<img id="tv" src="assets/caras/burlona.webp" alt="" class="tvbob" draggable="false">
 </div>
 
 </div>

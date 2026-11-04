@@ -58,6 +58,102 @@
   }
   if (tv) programar(2500, false);
 
+  // ---------- La chica TV se puede arrastrar (mouse o dedo) y recuerda dónde la dejaste ----------
+  var caja = tv && tv.parentNode;
+  if (caja) {
+    var pos = null; // posición en fracciones de la ventana: [x, y]
+    try { pos = JSON.parse(localStorage.getItem('lyo_tv')); } catch (e) {}
+    function limitar(x, y) {
+      var w = caja.offsetWidth, h = caja.offsetHeight;
+      return [Math.min(Math.max(x, 0), Math.max(0, window.innerWidth - w)),
+              Math.min(Math.max(y, 0), Math.max(0, window.innerHeight - h))];
+    }
+    function colocar(x, y) {
+      var p = limitar(x, y);
+      caja.style.left = p[0] + 'px';
+      caja.style.top = p[1] + 'px';
+    }
+    function guardar() {
+      try { localStorage.setItem('lyo_tv', JSON.stringify([caja.offsetLeft / window.innerWidth, caja.offsetTop / window.innerHeight])); } catch (e) {}
+    }
+    if (pos && pos.length === 2) colocar(pos[0] * window.innerWidth, pos[1] * window.innerHeight);
+    window.addEventListener('resize', function () { colocar(caja.offsetLeft, caja.offsetTop); });
+
+    var dx = 0, dy = 0, inicio = null, movio = false;
+    tv.addEventListener('pointerdown', function (e) {
+      inicio = [e.clientX, e.clientY];
+      dx = e.clientX - caja.offsetLeft;
+      dy = e.clientY - caja.offsetTop;
+      movio = false;
+      tv.setPointerCapture(e.pointerId);
+      caja.classList.add('arrastrando');
+      e.preventDefault();
+    });
+    tv.addEventListener('pointermove', function (e) {
+      if (!inicio) return;
+      if (Math.abs(e.clientX - inicio[0]) + Math.abs(e.clientY - inicio[1]) > 4) movio = true;
+      colocar(e.clientX - dx, e.clientY - dy);
+    });
+    function soltar() {
+      if (!inicio) return;
+      inicio = null;
+      caja.classList.remove('arrastrando');
+      if (movio) guardar(); else programar(0, true); // un toque sin arrastrar: cambia de cara
+    }
+    tv.addEventListener('pointerup', soltar);
+    tv.addEventListener('pointercancel', soltar);
+  }
+
+  // ---------- Estática: tras el vacío negro, la pantalla se llena de ruido y se corta antes de la terminal ----------
+  var zona = document.getElementById('zona-estatica');
+  var lienzo = document.getElementById('estatica');
+  if (zona && lienzo && !reducir && lienzo.getContext) {
+    var ctx = lienzo.getContext('2d');
+    var W = lienzo.width, H = lienzo.height;
+    var img = ctx.createImageData(W, H);
+    var visible = false, ultimo = 0, apagon = 0;
+    function suave(a, b, x) { var t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
+    function dibujar(t) {
+      if (!visible) return;
+      requestAnimationFrame(dibujar);
+      if (t - ultimo < 42) return; // ~24 cuadros por segundo
+      ultimo = t;
+      var r = zona.getBoundingClientRect();
+      var p = (window.innerHeight - r.top) / (r.height + window.innerHeight); // 0 → 1 mientras la zona cruza la ventana
+      var fuerza = suave(0.25, 0.55, p) * (1 - suave(0.68, 0.86, p));
+      if (apagon > 0) { apagon--; fuerza = 0; }
+      else if (Math.random() < 0.04) apagon = 1 + Math.floor(Math.random() * 3); // cortes breves
+      lienzo.style.opacity = fuerza * (0.55 + Math.random() * 0.45);
+      if (fuerza <= 0) return;
+      // franjas que "se rompen": más brillo y con tinte rojo o cian
+      var bandas = [];
+      for (var k = 0; k < 3; k++) if (Math.random() < 0.5) bandas.push([Math.floor(Math.random() * H), 2 + Math.floor(Math.random() * 9), Math.random() < 0.5 ? 0 : 1]);
+      var d = img.data;
+      for (var y = 0; y < H; y++) {
+        var tinte = -1;
+        for (var b = 0; b < bandas.length; b++) if (y >= bandas[b][0] && y < bandas[b][0] + bandas[b][1]) tinte = bandas[b][2];
+        var linea = (y % 2) ? 0.82 : 1; // líneas de escaneo
+        for (var x = 0; x < W; x++) {
+          var i = (y * W + x) * 4;
+          var v = Math.random();
+          v = v * v * 255 * linea * (tinte >= 0 ? 1.5 : 0.8);
+          d[i] = tinte === 0 ? Math.min(255, v * 1.2) : (tinte === 1 ? v * 0.4 : v);
+          d[i + 1] = tinte === 0 ? v * 0.35 : v;
+          d[i + 2] = tinte === 0 ? v * 0.35 : (tinte === 1 ? Math.min(255, v * 1.2) : v);
+          d[i + 3] = 255;
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+    }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        var ahora = es.some(function (e) { return e.isIntersecting; });
+        if (ahora && !visible) { visible = true; requestAnimationFrame(dibujar); }
+        else if (!ahora) { visible = false; lienzo.style.opacity = 0; }
+      }).observe(zona);
+    }
+  }
+
   // ---------- Terminal: la salida se escribe línea por línea al llegar a ella ----------
   // (una línea por segundo, igual que los time.sleep(1) del código que se ve arriba)
   var salida = document.getElementById('salida-terminal');

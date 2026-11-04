@@ -162,8 +162,8 @@
 
   // ---------- Barrera invisible: la TV no puede entrar a la zona de la estática ----------
   // Si el usuario baja, la TV se queda parada en la pared (sobre la página); al volver a subir sigue ahí, dormida,
-  // y al despertar la terminal cambia a CMD.
-  var cmdHecho = false, tDespertar = null, pendiente = false;
+  // y despierta.
+  var tDespertar = null, pendiente = false;
   function pedirBarrera() {
     if (pendiente) return;
     pendiente = true;
@@ -199,7 +199,6 @@
       mostrar('sorpresa', false);
       setTimeout(function () {
         mostrar('picara', false);
-        if (!cmdHecho) pasarACmd();
         setTimeout(function () {
           estado = tocaBarrera(zona.getBoundingClientRect().top) ? 'bloqueada' : 'libre';
           if (estado === 'libre') programar(2500, true);
@@ -229,14 +228,5 @@
     }, { threshold: 0.3 });
     io.observe(el);
   }
-  armar(document.getElementById('salida-terminal'), 6, 1000); // versión Python: una línea por segundo (como los time.sleep(1))
-  armar(document.getElementById('salida-cmd'), 6, 900);       // versión CMD (queda oculta hasta que la TV despierta)
-
-  function pasarACmd() {
-    cmdHecho = true;
-    var py = document.getElementById('term-py'), cmd = document.getElementById('term-cmd');
-    if (!py || !cmd) return;
-    py.hidden = true;
-    cmd.hidden = false;
-  }
+  armar(document.getElementById('salida-cmd'), 6, 900); // una línea cada 0.9 s al llegar a la terminal
 })();

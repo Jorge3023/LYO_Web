@@ -215,85 +215,8 @@ Ver tráiler [VIDEO]
 <!-- Terminal -->
 <section aria-label="Terminal" style="background:#050608;padding:0 32px 200px">
 <div style="max-width:880px;margin:0 auto">
-<div id="term-py" style="border:1px solid #2C2C3A;border-radius:10px;background:#0B0D10;overflow:hidden">
-<div style="display:flex;justify-content:space-between;gap:16px;padding:12px 20px;border-bottom:1px solid #2C2C3A;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:0.06em;color:#9AA3B2">
-<span>sujeto_048.py</span>
-<span>PYTHON</span>
-</div>
-<pre role="region" aria-label="Código del programa" tabindex="0" style="margin:0;padding:24px 28px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px;line-height:1.65;color:#C9D1DB;tab-size:4"><code><span class="tk">import</span> time
-
-<span class="tk">class</span> <span class="tf">Sujeto</span>:
-    <span class="ts">"""Una persona dentro del sistema."""</span>
-
-    <span class="tk">def</span> <span class="tf">__init__</span>(self, numero):
-        self.numero = numero              <span class="tc"># su número de sujeto</span>
-        self.estable = <span class="tn">True</span>               <span class="tc"># ¿está bien? Sí</span>
-        self.recuerdos_suprimidos = <span class="tn">True</span>  <span class="tc"># ¿sus recuerdos fueron borrados? Sí</span>
-        self.voz_activa = <span class="tn">False</span>           <span class="tc"># ¿puede hablar? No</span>
-        self.modo_texto = <span class="tn">False</span>           <span class="tc"># ¿se comunica solo con texto?</span>
-
-    <span class="tk">def</span> <span class="tf">revisar_estado</span>(self):
-        <span class="ts">"""Mira si el sujeto está bien."""</span>
-        <span class="tk">if</span> self.estable:
-            print(<span class="ts">"Sujeto "</span> + self.numero + <span class="ts">": OK"</span>)
-            print(<span class="ts">"Sujeto estable"</span>)
-        <span class="tk">else</span>:
-            print(<span class="ts">"Sujeto "</span> + self.numero + <span class="ts">": ALERTA"</span>)
-
-    <span class="tk">def</span> <span class="tf">revisar_recuerdos</span>(self):
-        <span class="ts">"""Mira si el sujeto todavía recuerda cosas."""</span>
-        <span class="tk">if</span> self.recuerdos_suprimidos:
-            print(<span class="ts">"Recuerdos suprimidos"</span>)
-
-    <span class="tk">def</span> <span class="tf">escanear_zona</span>(self, zona):
-        <span class="ts">"""Escanea una zona del cerebro del sujeto."""</span>
-        print(<span class="ts">"Zona "</span> + zona + <span class="ts">": escaneada"</span>)
-
-    <span class="tk">def</span> <span class="tf">revisar_voz</span>(self):
-        <span class="ts">"""Mira si el sujeto puede hablar."""</span>
-        <span class="tk">if</span> <span class="tk">not</span> self.voz_activa:
-            print(<span class="ts">"Voz de Sujeto "</span> + self.numero + <span class="ts">" desactivada"</span>)
-            self.modo_texto = <span class="tn">True</span>        <span class="tc"># si no puede hablar, solo escribe</span>
-
-    <span class="tk">def</span> <span class="tf">revisar_texto</span>(self):
-        <span class="ts">"""Mira cómo se comunica el sujeto."""</span>
-        <span class="tk">if</span> self.modo_texto:
-            print(<span class="ts">"Modo de texto activo"</span>)
-
-<span class="tc"># ==========================================</span>
-<span class="tc"># REVISIÓN DEL SUJETO</span>
-<span class="tc"># ==========================================</span>
-
-<span class="tc"># 1. Buscar al sujeto en el sistema</span>
-sujeto = Sujeto(<span class="ts">"048"</span>)
-
-<span class="tc"># 2. Revisar todo, una cosa a la vez</span>
-print(<span class="ts">"Iniciando revisión..."</span>)
-time.sleep(1)
-
-sujeto.revisar_estado()
-time.sleep(1)
-sujeto.revisar_recuerdos()
-time.sleep(1)
-sujeto.escanear_zona(<span class="ts">"prefrontal"</span>)  <span class="tc"># memoria de trabajo (temporal) y personalidad (estable)</span>
-time.sleep(1)
-sujeto.revisar_voz()
-time.sleep(1)
-sujeto.revisar_texto()</code></pre>
-<div id="salida-terminal" style="border-top:1px solid #2C2C3A;padding:20px 28px 24px;min-height:230px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px;line-height:1.7;color:#E0EBE6">
-<div style="color:#808F85">$ python sujeto_048.py</div>
-<div data-paso="1" hidden>Iniciando revisión...</div>
-<div data-paso="2" hidden>Sujeto 048: OK</div>
-<div data-paso="2" hidden>Sujeto estable</div>
-<div data-paso="3" hidden>Recuerdos suprimidos</div>
-<div data-paso="4" hidden>Zona prefrontal: escaneada</div>
-<div data-paso="5" hidden>Voz de Sujeto 048 desactivada</div>
-<div data-paso="6" hidden>Modo de texto activo</div>
-<div aria-hidden="true"><span class="blink">█</span></div>
-</div>
-</div>
-<!-- Versión CMD de la terminal: aparece cuando la TV despierta -->
-<div id="term-cmd" class="cmd" hidden>
+<!-- Terminal (estilo CMD) -->
+<div id="term-cmd" class="cmd">
 <div class="cmd-barra"><span>C:\Halcyon\sistema\cmd.exe</span><span aria-hidden="true">&#8212; &nbsp;&#9633; &nbsp;&#10005;</span></div>
 <div id="salida-cmd" class="cmd-cuerpo">
 <div>Sistema Halcyon [Versión 4.8.2051.0]</div>

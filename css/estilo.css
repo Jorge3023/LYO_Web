@@ -82,3 +82,25 @@ a:hover { color: #FFFFFF; }
 .com-txt { margin: 0; font-size: 16px; line-height: 1.55; color: #C9D1DB; white-space: pre-wrap; overflow-wrap: anywhere; }
 .com-txt.retirado { color: #9AA3B2; font-style: italic; }
 .escribiendo { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; color: #5FE3E3; margin-left: 28px; }
+
+.com-bloque { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+.com-titulo { margin: 0; font-size: 18px; font-weight: 800; color: #FFFFFF; display: flex; align-items: center; gap: 10px; }
+.com-n { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; font-weight: 500; color: #9AA3B2; border: 1px solid #34344A; border-radius: 999px; padding: 2px 8px; }
+.com-vacio { margin: 0; font-size: 15px; color: #9AA3B2; }
+.com-vacio[hidden] { display: none; }
+@keyframes borrar { 0% { opacity: 1; transform: none; filter: none; } 30% { opacity: 1; transform: translateX(-6px); filter: hue-rotate(90deg) saturate(4); } 45% { transform: translateX(8px) skewX(-8deg); } 60% { opacity: 0.6; transform: translateX(-3px); clip-path: inset(30% 0 40% 0); } 100% { opacity: 0; transform: translateX(14px); clip-path: inset(50% 0 50% 0); } }
+.borrando { animation: borrar 0.7s steps(6, end) forwards; pointer-events: none; }
+
+/* Globo de diálogo de la TV, como el de los asistentes de escritorio de antes */
+.globo { position: absolute; top: 4px; left: calc(100% + 14px); width: max-content; max-width: min(240px, 60vw); background: #FFFFE1; color: #000000; border: 1px solid #000000; border-radius: 10px; padding: 10px 26px 10px 12px; font-family: Tahoma, Verdana, 'Segoe UI', sans-serif; font-size: 13px; line-height: 1.4; box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45); pointer-events: auto; }
+.globo[hidden] { display: none; }
+.globo p { margin: 0; white-space: pre-wrap; }
+.globo::before, .globo::after { content: ''; position: absolute; top: 18px; border-style: solid; }
+.globo::before { left: -12px; border-width: 7px 12px 7px 0; border-color: transparent #000000 transparent transparent; }
+.globo::after { left: -10px; border-width: 6px 11px 6px 0; border-color: transparent #FFFFE1 transparent transparent; margin-top: 1px; }
+.globo.izquierda { left: auto; right: calc(100% + 14px); }
+.globo.izquierda::before { left: auto; right: -12px; border-width: 7px 0 7px 12px; border-color: transparent transparent transparent #000000; }
+.globo.izquierda::after { left: auto; right: -10px; border-width: 6px 0 6px 11px; border-color: transparent transparent transparent #FFFFE1; }
+.globo.grande p { font-size: 22px; font-weight: 700; }
+.globo-x { position: absolute; top: 3px; right: 5px; width: 18px; height: 18px; padding: 0; border: 0; background: transparent; color: #000000; font: 700 15px/18px Tahoma, Verdana, sans-serif; cursor: pointer; }
+.globo-x:hover { color: #B00000; }

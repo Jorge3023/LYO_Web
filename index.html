@@ -157,8 +157,16 @@ Ver tráiler [VIDEO]
 <button id="publicar" type="button" class="btn-a" style="background:var(--acento);color:#0B0B10;border:0;font-family:inherit;font-weight:800;font-size:16px;padding:12px 24px;border-radius:999px;cursor:pointer">Publicar</button>
 </div>
 </div>
-<p id="sin-comentarios" style="margin:0;font-size:16px;color:#9AA3B2">Aún no hay comentarios. Sé el primero.</p>
-<div id="lista-comentarios" aria-live="polite" class="comentarios"></div>
+<div class="com-bloque">
+<h3 class="com-titulo">Comentarios reales <span id="n-reales" class="com-n">0</span></h3>
+<p id="vacio-reales" class="com-vacio">Aún no hay comentarios. Sé el primero.</p>
+<div id="lista-reales" aria-live="polite" class="comentarios"></div>
+</div>
+<div class="com-bloque">
+<h3 class="com-titulo">Comentarios con respuesta <span id="n-arg" class="com-n">0</span></h3>
+<p id="vacio-arg" class="com-vacio">Nadie ha recibido respuesta todavía.</p>
+<div id="lista-arg" aria-live="polite" class="comentarios"></div>
+</div>
 </section>
 </main>
 
@@ -244,8 +252,9 @@ Ver tráiler [VIDEO]
 </div>
 
 <!-- La chica TV: fija en la ventana, arriba a la izquierda; se puede arrastrar con el mouse o el dedo -->
-<div class="tv" aria-hidden="true">
+<div class="tv">
 <img id="tv" src="assets/caras/burlona.webp" alt="" class="tvbob" draggable="false">
+<div id="tv-globo" class="globo" role="status" hidden><button type="button" class="globo-x" aria-label="Cerrar">&#215;</button><p id="tv-texto"></p></div>
 </div>
 
 </div>

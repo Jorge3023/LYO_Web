@@ -78,7 +78,7 @@
     var pos = null; // posición en fracciones de la ventana: [x, y]
     try { pos = JSON.parse(localStorage.getItem('lyo_tv')); } catch (e) {}
     if (pos && pos.length === 2) colocar(pos[0] * window.innerWidth, pos[1] * window.innerHeight);
-    window.addEventListener('resize', function () { colocar(izq(), arr()); pedirBarrera(); });
+    window.addEventListener('resize', function () { colocar(izq(), arr()); pedirBarrera(); ladoGlobo(); });
 
     var dx = 0, dy = 0, inicio = null, movio = false;
     tv.addEventListener('pointerdown', function (e) {
@@ -104,10 +104,90 @@
       if (!inicio) return;
       inicio = null;
       caja.classList.remove('arrastrando');
-      if (movio) guardar(); else programar(0, true); // un toque sin arrastrar: cambia de cara
+      if (movio) { guardar(); ladoGlobo(); }
+      else if (Math.random() < 0.6) decir(FRASES_CLIC[Math.floor(Math.random() * FRASES_CLIC.length)]); // un toque: habla
+      else { callar(); programar(0, true); } // o cambia de cara
     }
     tv.addEventListener('pointerup', soltar);
     tv.addEventListener('pointercancel', soltar);
+  }
+
+
+  // ---------- Globo de diálogo: la TV habla como un asistente de escritorio de los 2000 ----------
+  var globo = document.getElementById('tv-globo');
+  var globoTxt = document.getElementById('tv-texto');
+  var tGlobo = null, tEscribir = null, hablando = false;
+  var FRASES_CLIC = [
+    '¡Hola! ¿Necesitas ayuda para encontrar algo?',
+    '¿Sabías que nadie recuerda cómo llegó aquí?',
+    'No me toques la pantalla. Se raya.',
+    'Puedes arrastrarme. Pero no muy abajo.',
+    'Consejo del día: sigue bajando.',
+    '¿Leíste los términos y condiciones? Yo tampoco.',
+    'Estoy aquí para ayudarte. Eso me dijeron que dijera.',
+    'Si ves a alguien con bata, no le digas que me viste.'
+  ];
+  var FRASES_SOLA = [
+    '¿Sigues ahí?',
+    'Llevas un rato leyendo. Me gusta.',
+    '¿Quieres que te cuente un secreto? ...todavía no.',
+    'Tengo una pregunta. Escríbela en los comentarios.',
+    'A veces escucho pasos. Debe ser el ventilador.'
+  ];
+  function ladoGlobo() {
+    if (!globo || !caja) return;
+    var r = caja.getBoundingClientRect();
+    globo.classList.toggle('izquierda', r.left + r.width / 2 > window.innerWidth / 2);
+  }
+  function callar() {
+    clearTimeout(tGlobo); clearTimeout(tEscribir);
+    hablando = false;
+    if (globo) globo.hidden = true;
+  }
+  // texto: lo que dice; opciones: { ms: cuánto se queda, cara: cara que pone, grande: letras grandes, forzar: aunque esté dormida }
+  function decir(texto, opciones) {
+    if (!globo || !globoTxt) return;
+    opciones = opciones || {};
+    if (!opciones.forzar && (estado === 'dormida' || estado === 'despertando')) return;
+    callar();
+    hablando = true;
+    ladoGlobo();
+    globo.classList.toggle('grande', !!opciones.grande);
+    if (opciones.cara) { clearTimeout(temporizador); mostrar(opciones.cara, false); }
+    globo.hidden = false;
+    var palabras = texto.split(' ');
+    var k = 0;
+    function escribir() { // palabra por palabra, como si lo fuera diciendo
+      k++;
+      globoTxt.textContent = palabras.slice(0, k).join(' ');
+      if (k < palabras.length && !reducir) tEscribir = setTimeout(escribir, 110);
+    }
+    if (reducir) k = palabras.length - 1;
+    escribir();
+    tGlobo = setTimeout(function () {
+      callar();
+      if (estado === 'libre') programar(1200, true);
+    }, opciones.ms || 2600 + texto.length * 55);
+  }
+  if (globo) {
+    globo.querySelector('.globo-x').addEventListener('click', callar);
+    // saludo la primera vez y, de vez en cuando, algo si nadie le hace caso
+    var yaSaludo = false;
+    try { yaSaludo = sessionStorage.getItem('lyo_saludo') === '1'; } catch (e) {}
+    if (!yaSaludo) {
+      setTimeout(function () {
+        decir('¡Hola! Soy tu asistente. Puedes arrastrarme a donde quieras.', { cara: 'feliz' });
+        try { sessionStorage.setItem('lyo_saludo', '1'); } catch (e) {}
+      }, 3500);
+    }
+    var ultimoUso = Date.now();
+    ['scroll', 'pointerdown', 'keydown'].forEach(function (ev) { window.addEventListener(ev, function () { ultimoUso = Date.now(); }, { passive: true }); });
+    setInterval(function () {
+      if (!hablando && estado === 'libre' && Date.now() - ultimoUso > 40000 && Math.random() < 0.5) {
+        decir(FRASES_SOLA[Math.floor(Math.random() * FRASES_SOLA.length)]);
+        ultimoUso = Date.now();
+      }
+    }, 10000);
   }
 
   // ---------- Estática: tras el vacío negro, la pantalla se llena de ruido y se corta antes de la terminal ----------
@@ -174,6 +254,7 @@
   function tocaBarrera(yB) { return arr() + caja.offsetHeight >= yB - 0.5; }
   function extrano() {
     mostrar('sorpresa', !reducir); // se queda pasmada al chocar con la pared invisible
+    decir('¿Eh? Hay algo aquí... no puedo pasar.', { ms: 2600, forzar: true });
     setTimeout(function () { if (estado === 'bloqueada') tv.className = 'tvbob'; }, 400);
   }
   function barrera() {
@@ -186,7 +267,7 @@
     if (estado === 'libre' && toca) { estado = 'bloqueada'; clearTimeout(temporizador); extrano(); }
     else if (estado === 'bloqueada' && !toca) { estado = 'libre'; programar(900, true); }
     if (yB < 0) { // el usuario siguió bajando: la TV queda atrás, fuera de la ventana, y se duerme
-      if (estado === 'libre' || estado === 'bloqueada') { estado = 'dormida'; clearTimeout(temporizador); mostrar('dormida', false); }
+      if (estado === 'libre' || estado === 'bloqueada') { estado = 'dormida'; callar(); clearTimeout(temporizador); mostrar('dormida', false); }
       if (tDespertar) { clearTimeout(tDespertar); tDespertar = null; }
     } else if (estado === 'dormida' && !tDespertar && yB > h * 0.6) { // volvió a subir y la ve dormida
       tDespertar = setTimeout(despertar, 2400);
@@ -200,6 +281,7 @@
       mostrar('sorpresa', false);
       setTimeout(function () {
         mostrar('picara', false);
+        decir('...me quedé dormida. ¿A dónde fuiste?', { forzar: true, ms: 3200 });
         setTimeout(function () {
           estado = tocaBarrera(zona.getBoundingClientRect().top) ? 'bloqueada' : 'libre';
           if (estado === 'libre') programar(2500, true);
@@ -258,84 +340,133 @@
     });
   })();
 
-  // ---------- Comentarios: se guardan en este navegador y alguien contesta ----------
+  // ---------- Comentarios ----------
+  // Se guardan en este navegador. Los que tocan ciertos temas reciben respuesta de "???" (o de Halcyon) y van
+  // a "Comentarios con respuesta"; los demás van a "Comentarios reales", sin respuesta. Lo nuevo sale arriba.
+  // Si hay más de 10 con respuesta, la TV se harta ("Mucho texto.") y los borra todos; los reales se quedan.
   (function () {
     var caja = document.getElementById('comentario');
     var boton = document.getElementById('publicar');
-    var lista = document.getElementById('lista-comentarios');
-    var vacio = document.getElementById('sin-comentarios');
-    if (!caja || !boton || !lista) return;
-    var CLAVE = 'lyo_comentarios';
+    var listaReal = document.getElementById('lista-reales');
+    var listaArg = document.getElementById('lista-arg');
+    if (!caja || !boton || !listaReal || !listaArg) return;
+    var CLAVE = 'lyo_comentarios_v2';
+    var LIMITE = 10;
     var VOZ = '???';
     var MOD = 'Halcyon · Moderación';
-    var guardados = [];
-    try { guardados = JSON.parse(localStorage.getItem(CLAVE)) || []; } catch (e) { guardados = []; }
+    var hilos = []; // { tipo: 'real' | 'arg', txt, ts, retirado, resp: { tipo: 'voz' | 'mod', autor, txt, ts } }
+    try { hilos = JSON.parse(localStorage.getItem(CLAVE)) || []; } catch (e) { hilos = []; }
 
-    // Respuestas según lo que se escriba. Se revisan en orden; la primera que coincide gana.
+    // Temas que reciben respuesta. Se revisan en orden; la primera que coincide gana.
     var REGLAS = [
       { p: /halcyon/, mod: true, r: ['Este comentario infringe las normas de la comunidad y ha sido retirado. Gracias por su comprensión.'] },
       { p: /terminal|\bcmd\b|consol/, r: ['Abajo. Mucho más abajo. La terminal te abre si la llamas por su nombre.', 'Aquí no puedo hablar. Allá abajo hay una terminal.'] },
       { p: /\b048\b|sujeto/, r: ['¿Cómo sabes ese número?', 'No vuelvas a escribir ese número aquí. Lo leen.'] },
-      { p: /bata|doctor|m[eé]dic|cl[ií]nica|enfermer/, r: ['No les digas que preguntaste por ellos.', 'Sonríen mucho, ¿verdad? Siempre con una libreta.'] },
-      { p: /\btv\b|tele|pantalla|chica|ni[ñn]a/, r: ['Ella te está mirando ahora mismo.', 'No la pierdas de vista. Si se apaga, se apaga todo.'] },
-      { p: /ayuda|help|auxilio|socorro/, r: ['Nadie viene cuando lo pides aquí. Baja.', 'Ayúdame tú primero.'] },
+      { p: /bata|doctor|m[eé]dic|cl[ií]nica|enfermer|cient[ií]fic/, r: ['No les digas que preguntaste por ellos.', 'Sonríen mucho, ¿verdad? Siempre con una libreta.'] },
+      { p: /\btv\b|\btele\b|televis|pantalla|chica|ni[ñn]a/, r: ['Ella te está mirando ahora mismo.', 'No la pierdas de vista. Si se apaga, se apaga todo.'] },
+      { p: /ayuda|help|auxilio|socorro|s[aá]came/, r: ['Nadie viene cuando lo pides aquí. Baja.', 'Ayúdame tú primero.'] },
       { p: /secreto|c[oó]digo|oculto|pista|easter/, r: ['Si algo no carga, no es un error.', 'Lo que buscas ya lo viste. No lo leíste.'] },
-      { p: /miedo|creepy|raro|extra[ñn]o|terror|da cosa/, r: ['Lo raro es que sigas aquí.', 'Todavía no has visto nada.'] },
+      { p: /curiosidad|\bgato\b|sherlock|binario/, r: ['La curiosidad mató al gato. Termina la frase.', '¿Ya lo tradujiste? Está en ceros y unos.'] },
+      { p: /t[eé]rminos|condiciones/, r: ['Nadie los lee. Están hechos para eso.', 'La última línea es la que importa.'] },
+      { p: /copia|servidor|memoria|recuerd/, r: ['La copia se queda. Tú sales creyendo que te fuiste entero.', 'Lo que recuerdas lo eligieron por ti.'] },
+      { p: /d[oó]nde estoy|qu[eé] (es|pasa|pas[oó]) (aqu[ií]|esto)|qu[eé] es este lugar/, r: ['Dentro. Igual que yo.', 'En un lugar que no aparece en ningún mapa.'] },
+      { p: /miedo|creepy|da cosa|terror/, r: ['Lo raro es que sigas aquí.', 'Todavía no has visto nada.'] },
       { p: /\blyo\b/, r: ['Todavía no sabes lo que significa.', 'Dilo otra vez. Despacio.'] },
-      { p: /qui[eé]n eres|qui[eé]n sos|who are you|eres real/, r: ['Alguien que se quedó aquí.', 'La copia que no salió.'] },
-      { p: /hola|buenas|hello|\bhi\b|hey/, r: ['Hola. Hace mucho que nadie escribía aquí.', '...¿hola?'] },
-      { p: /juego|game|descarg|demo|cu[aá]ndo sale|precio/, r: ['Aún no está listo. Nosotros tampoco.', 'Pronto. Cuando terminen de revisarte.'] },
-      { p: /gracias|thanks/, r: ['No me agradezcas todavía.'] }
+      { p: /qui[eé]n eres|qui[eé]n sos|who are you|eres real|est[aá]s viv/, r: ['Alguien que se quedó aquí.', 'La copia que no salió.'] },
+      { p: /^\s*(hola|buenas|hello|hey)\b/, r: ['Hola. Hace mucho que nadie escribía aquí.', '...¿hola?'] }
     ];
-    var GENERICAS = ['Te leí.', 'Guardado. Todo se guarda.', '¿Quién te dijo que escribieras aquí?', 'No estás solo en esta página.', 'Sigue bajando.', 'Eso mismo escribió el último que estuvo aquí.'];
 
     function elegir(a) { return a[Math.floor(Math.random() * a.length)]; }
     function hora(ts) {
       var d = new Date(ts);
       return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + ' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
     }
-    function guardar() { try { localStorage.setItem(CLAVE, JSON.stringify(guardados.slice(-40))); } catch (e) {} }
-    function pintar(c, despues) {
+    function guardarTodo() { try { localStorage.setItem(CLAVE, JSON.stringify(hilos.slice(-80), function (k, v) { return k === 'el' ? undefined : v; })); } catch (e) {} }
+    function tarjeta(autor, txt, ts, clase, retirado) {
       var el = document.createElement('article');
-      el.className = 'comentario' + (c.tipo === 'voz' ? ' respuesta' : c.tipo === 'mod' ? ' moderacion' : '');
+      el.className = 'comentario' + (clase ? ' ' + clase : '');
       var cab = document.createElement('div'); cab.className = 'com-cab';
-      var a = document.createElement('span'); a.className = 'com-autor'; a.textContent = c.autor;
-      var f = document.createElement('span'); f.className = 'com-fecha'; f.textContent = hora(c.ts);
+      var a = document.createElement('span'); a.className = 'com-autor'; a.textContent = autor;
+      var f = document.createElement('span'); f.className = 'com-fecha'; f.textContent = hora(ts);
       cab.appendChild(a); cab.appendChild(f);
-      var p = document.createElement('p'); p.className = 'com-txt' + (c.retirado ? ' retirado' : ''); p.textContent = c.retirado ? '[comentario retirado]' : c.txt;
+      var p = document.createElement('p'); p.className = 'com-txt' + (retirado ? ' retirado' : ''); p.textContent = retirado ? '[comentario retirado]' : txt;
       el.appendChild(cab); el.appendChild(p);
-      if (despues && despues.parentNode) despues.parentNode.insertBefore(el, despues.nextSibling); else lista.appendChild(el);
-      if (vacio) vacio.hidden = true;
-      return { el: el, p: p };
+      return el;
     }
-    guardados.forEach(pintar);
+    function contar() {
+      var nr = 0, na = 0;
+      hilos.forEach(function (h) { if (h.tipo === 'arg') na++; else nr++; });
+      document.getElementById('n-reales').textContent = nr;
+      document.getElementById('n-arg').textContent = na;
+      document.getElementById('vacio-reales').hidden = nr > 0;
+      document.getElementById('vacio-arg').hidden = na > 0;
+      return na;
+    }
+    // Un hilo = el comentario y, debajo, su respuesta. Se agrega arriba de la lista.
+    function pintarHilo(h, conRespuesta) {
+      var grupo = document.createElement('div');
+      grupo.className = 'comentarios';
+      grupo.appendChild(tarjeta('Visitante', h.txt, h.ts, '', h.retirado));
+      if (h.resp && conRespuesta) grupo.appendChild(tarjeta(h.resp.autor, h.resp.txt, h.resp.ts, h.resp.tipo === 'mod' ? 'moderacion' : 'respuesta'));
+      var lista = h.tipo === 'arg' ? listaArg : listaReal;
+      lista.insertBefore(grupo, lista.firstChild);
+      h.el = grupo;
+      return grupo;
+    }
+    hilos.forEach(function (h) { pintarHilo(h, true); });
+    contar();
 
-    function responder(texto, nodo, c) {
-      var k = texto.toLowerCase();
-      var regla = null;
-      for (var i = 0; i < REGLAS.length; i++) if (REGLAS[i].p.test(k)) { regla = REGLAS[i]; break; }
-      var propios = guardados.filter(function (x) { return x.tipo === 'tu'; }).length;
-      var txt = regla ? elegir(regla.r) : (propios >= 4 && Math.random() < 0.5 ? 'Demasiadas preguntas. Te están leyendo.' : elegir(GENERICAS));
-      var mod = !!(regla && regla.mod);
+    function responder(h) {
+      var grupo = h.el;
+      var mod = h.resp.tipo === 'mod';
       var aviso = document.createElement('div');
       aviso.className = 'escribiendo';
-      aviso.textContent = (mod ? MOD : VOZ) + ' está escribiendo...';
-      setTimeout(function () { lista.insertBefore(aviso, nodo.el.nextSibling); }, 900);
+      aviso.textContent = h.resp.autor + ' está escribiendo...';
+      setTimeout(function () { grupo.appendChild(aviso); }, 900);
       setTimeout(function () {
         aviso.remove();
-        if (mod) { c.retirado = true; nodo.p.textContent = '[comentario retirado]'; nodo.p.className = 'com-txt retirado'; }
-        var r = { tipo: mod ? 'mod' : 'voz', autor: mod ? MOD : VOZ, txt: txt, ts: Date.now() };
-        guardados.splice(guardados.indexOf(c) + 1, 0, r); guardar(); pintar(r, nodo.el);
-      }, 2400 + Math.random() * 1800 + txt.length * 25);
+        if (mod) { var p = grupo.querySelector('.com-txt'); p.textContent = '[comentario retirado]'; p.className = 'com-txt retirado'; }
+        grupo.appendChild(tarjeta(h.resp.autor, h.resp.txt, h.resp.ts, mod ? 'moderacion' : 'respuesta'));
+        if (contar() > LIMITE) setTimeout(muchoTexto, 1600);
+      }, 2400 + Math.random() * 1800 + h.resp.txt.length * 25);
+    }
+
+    var limpiando = false;
+    function muchoTexto() {
+      if (limpiando) return;
+      limpiando = true;
+      decir('Mucho texto.', { cara: 'enojada', grande: true, forzar: true, ms: 3800 });
+      setTimeout(function () {
+        var grupos = listaArg.children;
+        for (var i = 0; i < grupos.length; i++) grupos[i].classList.add('borrando');
+        setTimeout(function () {
+          listaArg.textContent = '';
+          hilos = hilos.filter(function (h) { return h.tipo !== 'arg'; });
+          guardarTodo();
+          contar();
+          limpiando = false;
+        }, 750);
+      }, 1100);
     }
 
     function publicar() {
       var t = caja.value.trim().slice(0, 600);
       if (!t) { caja.focus(); return; }
       caja.value = '';
-      var c = { tipo: 'tu', autor: 'Visitante', txt: t, ts: Date.now() };
-      guardados.push(c); guardar();
-      responder(t, pintar(c), c);
+      var k = t.toLowerCase();
+      var regla = null;
+      for (var i = 0; i < REGLAS.length; i++) if (REGLAS[i].p.test(k)) { regla = REGLAS[i]; break; }
+      var h = { tipo: regla ? 'arg' : 'real', txt: t, ts: Date.now() };
+      if (regla) {
+        var mod = !!regla.mod;
+        h.resp = { tipo: mod ? 'mod' : 'voz', autor: mod ? MOD : VOZ, txt: elegir(regla.r), ts: Date.now() };
+        if (mod) h.retirado = true;
+      }
+      hilos.push(h);
+      guardarTodo(); // la respuesta ya queda guardada: si recargan, aparece directo
+      pintarHilo(h, false);
+      contar();
+      if (regla) responder(h);
     }
     boton.addEventListener('click', publicar);
     caja.addEventListener('keydown', function (e) {

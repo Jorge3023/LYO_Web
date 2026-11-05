@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  // ---------- Mensaje para quien abra la consola ----------
+  // ---------- Mensaje para quien abra las herramientas de desarrollador ----------
   var BINARIO = '01110000 01100101 01110010 01101111 00100000 01101100 01100001 00100000 01110011 01100001 01110100 01101001 01110011 01100110 01100001 01100011 01100011 01101001 11000011 10110011 01101110 00100000 01101100 01101111 00100000 01110100 01110010 01100001 01101010 01101111 00100000 01100100 01100101 00100000 01110110 01110101 01100101 01101100 01110100 01100001';
   console.log('%c¿Intentas buscar algo pequeño, Sherlock Holmes?', 'font: 700 18px monospace; color: #E0EBE6;');
   console.log('%cMe intriga tu curiosidad. Sigue buscando, solo recuerda que...', 'font: 14px monospace; color: #B8C7BD;');
@@ -230,7 +230,7 @@
     io.observe(el);
   }
   armar(document.getElementById('salida-cmd'), 6, 900); // una línea cada 0.9 s al llegar a la terminal
-  // ---------- Consola de abajo: escribir 'consola' (o 'console') abre la subpágina ----------
+  // ---------- Terminal de abajo: escribir 'terminal' abre la subpágina ----------
   (function () {
     var form = document.getElementById('cmd-form');
     var entrada = document.getElementById('cmd-in');
@@ -244,9 +244,9 @@
       if (!v) return;
       var k = v.toLowerCase().replace(/\.exe$/, '');
       linea('C:\\LYO\\sujeto_048>' + v);
-      if (k === 'consola' || k === 'console') {
+      if (k === 'terminal') {
         linea('Abriendo línea remota...');
-        setTimeout(function () { location.href = 'consola/'; }, 600);
+        setTimeout(function () { location.href = 'terminal/'; }, 600);
       } else if (k === 'ayuda' || k === 'help') {
         ['estado.exe', 'recuerdos.exe', 'escaner.exe', 'voz.exe', 'texto.exe'].forEach(linea);
       } else if (k === 'cls' || k === 'clear') {
@@ -274,7 +274,7 @@
     // Respuestas según lo que se escriba. Se revisan en orden; la primera que coincide gana.
     var REGLAS = [
       { p: /halcyon/, mod: true, r: ['Este comentario infringe las normas de la comunidad y ha sido retirado. Gracias por su comprensión.'] },
-      { p: /consol|terminal|\bcmd\b/, r: ['Abajo. Mucho más abajo. Escribe ahí lo mismo que escribiste aquí.', 'Aquí no puedo hablar. Allá abajo hay una consola.'] },
+      { p: /terminal|\bcmd\b|consol/, r: ['Abajo. Mucho más abajo. La terminal te abre si la llamas por su nombre.', 'Aquí no puedo hablar. Allá abajo hay una terminal.'] },
       { p: /\b048\b|sujeto/, r: ['¿Cómo sabes ese número?', 'No vuelvas a escribir ese número aquí. Lo leen.'] },
       { p: /bata|doctor|m[eé]dic|cl[ií]nica|enfermer/, r: ['No les digas que preguntaste por ellos.', 'Sonríen mucho, ¿verdad? Siempre con una libreta.'] },
       { p: /\btv\b|tele|pantalla|chica|ni[ñn]a/, r: ['Ella te está mirando ahora mismo.', 'No la pierdas de vista. Si se apaga, se apaga todo.'] },

@@ -1,13 +1,13 @@
-// LYO · consola remota. Conversación con alguien "del otro lado"; solo acepta Y/N.
+// LYO · terminal remota. Conversación con alguien "del otro lado"; solo acepta Y/N.
 (function () {
 const HABLANTE = '???'; // cómo se muestra quien escribe al otro lado
-const ARCHIVO = '[ARCHIVO].exe'; // el archivo que hay que ejecutar fuera de esta consola (cámbialo cuando lo tengas)
+const ARCHIVO = '[ARCHIVO].exe'; // el archivo que hay que ejecutar fuera de esta terminal (cámbialo cuando lo tengas)
 const COLORES = { sis: '#9AA3B2', dato: '#5C6670', err: '#FF9A9A', tu: '#E0EBE6', ella: '#5FE3E3', barra: '#E0EBE6' };
 const MODULOS = ['recuerdos.idx', 'personalidad.bin', 'corteza_pf.dll', 'voz.cfg', 'sujeto_048.sys', 'estabilizador.exe', 'memoria_trabajo.tmp', 'mapa_000.dat', 'copia_017.bak', 'texto.drv', 'bata_registro.log'];
 const ESTADOS = ['OK', 'OK', 'OK', 'OK', 'LEÍDO', 'MONTADO', 'SUPRIMIDO', 'BLOQUEADO'];
 
 
-class Consola {
+class Terminal {
   constructor() {
     this.vivo = true;
     this.reducir = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -212,7 +212,7 @@ class Consola {
     this.agregar('sis', '(c) Halcyon Corporation. Todos los derechos reservados.');
     this.agregar('sis', '');
     await this.espera(500);
-    this.agregar('sis', 'C:\\LYO\\consola>conectar.exe --linea=048');
+    this.agregar('sis', 'C:\\LYO\\terminal>conectar.exe --linea=048');
     await this.espera(700);
     await this.datos(34, 22);
     await this.barra('Cargando módulos del sistema', 2600);
@@ -271,7 +271,7 @@ class Consola {
       ? 'No deberías. Pero gracias.'
       : 'Haces bien. Aun así, gracias por escribir.');
     await this.habla('Te dejé un archivo. Esta ventana solo muestra texto: no puede ejecutarlo.');
-    await this.habla('Tendrás que abrir otra consola. Una nueva, fuera de esta ventana, y ejecutarlo desde ahí.');
+    await this.habla('Tendrás que abrir otra terminal. Una nueva, fuera de esta ventana, y ejecutarlo desde ahí.');
     await this.habla('No le digas a nadie que hablamos.');
   }
   async final() {
@@ -281,8 +281,8 @@ class Consola {
     this.agregar('sis', '');
     this.agregar('sis', 'Registro parcial guardado: [CÓDIGO PARA LA SIGUIENTE PARTE]');
     this.agregar('sis', 'Archivo recibido: ' + ARCHIVO);
-    this.agregar('err', 'ERROR: no se puede ejecutar desde esta consola (modo de solo texto).');
-    this.agregar('sis', 'Sugerencia: abra una consola nueva.');
+    this.agregar('err', 'ERROR: no se puede ejecutar desde esta terminal (modo de solo texto).');
+    this.agregar('sis', 'Sugerencia: abra una terminal nueva.');
     this.agregar('sis', '');
     document.getElementById('salir').hidden = false;
     this.bajar();
@@ -290,5 +290,5 @@ class Consola {
 
 }
 
-new Consola();
+new Terminal();
 })();

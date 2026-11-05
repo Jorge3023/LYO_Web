@@ -6,7 +6,7 @@ Sitio estático (HTML + CSS + JS), sin backend.
 
 - `index.html` — página principal
 - `css/estilo.css` — estilos (el color de acento está en `--acento`)
-- `js/principal.js` — cara de la TV (`PROB_SUSTO` = % de caras aterradoras), terminal y mensaje de consola
+- `js/principal.js` — cara de la TV (`PROB_SUSTO` = % de caras aterradoras), terminal y mensaje para las herramientas de desarrollador
 - `assets/` — fondo de código y caras de la TV
 
 ## Publicar con GitHub Pages

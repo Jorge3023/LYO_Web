@@ -341,15 +341,14 @@
   })();
 
   // ---------- Comentarios ----------
-  // Se guardan en este navegador. Los que tocan ciertos temas reciben respuesta de "???" (o de Halcyon) y van
-  // a "Comentarios con respuesta"; los demás van a "Comentarios reales", sin respuesta. Lo nuevo sale arriba.
-  // Si hay más de 10 con respuesta, la TV se harta ("Mucho texto.") y los borra todos; los reales se quedan.
+  // Se guardan en este navegador, todos en una sola lista (lo nuevo arriba). Los que tocan ciertos temas reciben
+  // respuesta de "???" (o de Halcyon); los demás no. Por dentro se cuentan aparte: si hay más de 10 con respuesta,
+  // la TV se harta ("Mucho texto.") y borra solo esos. Los demás se quedan y el contador baja: que se note.
   (function () {
     var caja = document.getElementById('comentario');
     var boton = document.getElementById('publicar');
-    var listaReal = document.getElementById('lista-reales');
-    var listaArg = document.getElementById('lista-arg');
-    if (!caja || !boton || !listaReal || !listaArg) return;
+    var lista = document.getElementById('lista-coment');
+    if (!caja || !boton || !lista) return;
     var CLAVE = 'lyo_comentarios_v2';
     var LIMITE = 10;
     var VOZ = '???';
@@ -394,13 +393,11 @@
       return el;
     }
     function contar() {
-      var nr = 0, na = 0;
-      hilos.forEach(function (h) { if (h.tipo === 'arg') na++; else nr++; });
-      document.getElementById('n-reales').textContent = nr;
-      document.getElementById('n-arg').textContent = na;
-      document.getElementById('vacio-reales').hidden = nr > 0;
-      document.getElementById('vacio-arg').hidden = na > 0;
-      return na;
+      var na = 0;
+      hilos.forEach(function (h) { if (h.tipo === 'arg') na++; });
+      document.getElementById('n-coment').textContent = hilos.length;
+      document.getElementById('vacio-coment').hidden = hilos.length > 0;
+      return na; // cuántos tienen respuesta (para el límite)
     }
     // Un hilo = el comentario y, debajo, su respuesta. Se agrega arriba de la lista.
     function pintarHilo(h, conRespuesta) {
@@ -408,7 +405,6 @@
       grupo.className = 'comentarios';
       grupo.appendChild(tarjeta('Visitante', h.txt, h.ts, '', h.retirado));
       if (h.resp && conRespuesta) grupo.appendChild(tarjeta(h.resp.autor, h.resp.txt, h.resp.ts, h.resp.tipo === 'mod' ? 'moderacion' : 'respuesta'));
-      var lista = h.tipo === 'arg' ? listaArg : listaReal;
       lista.insertBefore(grupo, lista.firstChild);
       h.el = grupo;
       return grupo;
@@ -437,10 +433,10 @@
       limpiando = true;
       decir('Mucho texto.', { cara: 'enojada', grande: true, forzar: true, ms: 3800 });
       setTimeout(function () {
-        var grupos = listaArg.children;
-        for (var i = 0; i < grupos.length; i++) grupos[i].classList.add('borrando');
+        var borrar = hilos.filter(function (h) { return h.tipo === 'arg' && h.el; });
+        borrar.forEach(function (h) { h.el.classList.add('borrando'); });
         setTimeout(function () {
-          listaArg.textContent = '';
+          borrar.forEach(function (h) { h.el.remove(); });
           hilos = hilos.filter(function (h) { return h.tipo !== 'arg'; });
           guardarTodo();
           contar();

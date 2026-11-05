@@ -149,7 +149,7 @@ Ver tráiler [VIDEO]
 
 <!-- Comentarios -->
 <section id="comentarios" style="display:flex;flex-direction:column;gap:16px">
-<h2 style="margin:0;font-size:28px;font-weight:800;color:#FFFFFF">Comentarios</h2>
+<h2 style="margin:0;font-size:28px;font-weight:800;color:#FFFFFF;display:flex;align-items:center;gap:12px">Comentarios <span id="n-coment" class="com-n">0</span></h2>
 <div style="display:flex;flex-direction:column;gap:10px">
 <label for="comentario" style="font-size:15px;font-weight:500">Escribe un comentario</label>
 <textarea id="comentario" rows="4" style="background:#14141C;color:#E8ECF2;border:1px solid #44445A;border-radius:10px;padding:14px 16px;font-family:inherit;font-size:16px;resize:vertical"></textarea>
@@ -157,16 +157,8 @@ Ver tráiler [VIDEO]
 <button id="publicar" type="button" class="btn-a" style="background:var(--acento);color:#0B0B10;border:0;font-family:inherit;font-weight:800;font-size:16px;padding:12px 24px;border-radius:999px;cursor:pointer">Publicar</button>
 </div>
 </div>
-<div class="com-bloque">
-<h3 class="com-titulo">Comentarios reales <span id="n-reales" class="com-n">0</span></h3>
-<p id="vacio-reales" class="com-vacio">Aún no hay comentarios. Sé el primero.</p>
-<div id="lista-reales" aria-live="polite" class="comentarios"></div>
-</div>
-<div class="com-bloque">
-<h3 class="com-titulo">Comentarios con respuesta <span id="n-arg" class="com-n">0</span></h3>
-<p id="vacio-arg" class="com-vacio">Nadie ha recibido respuesta todavía.</p>
-<div id="lista-arg" aria-live="polite" class="comentarios"></div>
-</div>
+<p id="vacio-coment" class="com-vacio">Aún no hay comentarios. Sé el primero.</p>
+<div id="lista-coment" aria-live="polite" class="comentarios"></div>
 </section>
 </main>
 

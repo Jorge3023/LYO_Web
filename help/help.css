@@ -1,0 +1,62 @@
+html, body { margin: 0; background: #050608; }
+body { font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #1D1F24; }
+.fondo { position: fixed; inset: 0; background: url(../assets/fondo_codigo.jpg) center/25vw auto repeat; opacity: 0.18; }
+.hoja { position: relative; max-width: 860px; margin: 48px auto 120px; padding: 48px 56px 40px; background: #ECE8DE; box-shadow: 0 30px 80px rgba(0,0,0,0.6); background-image: repeating-linear-gradient(0deg, rgba(0,0,0,0.025) 0 1px, transparent 1px 4px); }
+.membrete { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; border-bottom: 2px solid #1D1F24; padding-bottom: 20px; }
+.emisor { margin: 0 0 8px; font: 500 12px 'IBM Plex Mono', monospace; letter-spacing: 0.12em; color: #5A5E66; }
+h1 { margin: 0; font-size: 40px; font-weight: 800; letter-spacing: -0.01em; }
+.meta { margin: 8px 0 0; font: 13px 'IBM Plex Mono', monospace; color: #5A5E66; }
+.sello { margin: 4px 0 0; padding: 8px 14px; border: 3px solid #B3261E; color: #B3261E; font: 800 18px/1.1 'Hanken Grotesk', sans-serif; letter-spacing: 0.1em; text-align: center; transform: rotate(-8deg); opacity: 0.85; filter: url(#crayon); }
+.seccion { padding: 28px 0 8px; border-bottom: 1px dashed #B9B4A8; position: relative; }
+h2 { margin: 0 0 16px; font-size: 22px; font-weight: 800; display: flex; align-items: baseline; gap: 12px; }
+.num { font: 500 14px 'IBM Plex Mono', monospace; color: #8A8E96; }
+.fila { display: flex; flex-wrap: wrap; gap: 16px; }
+.fig { flex: 1 1 200px; margin: 0; background: #F7F4EC; border: 1px solid #CFC9BB; border-radius: 8px; padding: 12px; }
+.fig.ancha { flex-basis: 100%; }
+.fig svg { display: block; width: 100%; height: auto; max-height: 190px; }
+figcaption { margin-top: 6px; font-size: 14px; color: #4A4E56; }
+.txt { margin: 14px 0 12px; font-size: 16px; line-height: 1.6; color: #2E3138; max-width: 40em; }
+.pend { font: 12px 'IBM Plex Mono', monospace; color: #8A8E96; }
+.tecla { fill: #FFFFFF; stroke: #1D1F24; stroke-width: 2; }
+.tecla-t, .rotulo { fill: #1D1F24; font: 600 14px 'IBM Plex Mono', monospace; }
+.rotulo-g { fill: #4A4E56; font: 13px 'Hanken Grotesk', sans-serif; }
+.linea { stroke: #1D1F24; stroke-width: 2; fill: none; }
+.flecha { stroke: #1D1F24; stroke-width: 2; fill: none; stroke-dasharray: 5 4; }
+.boton-izq { fill: #E64040; }
+.boton-der { fill: #1AD9D9; }
+.arma { fill: none; stroke: #E64040; stroke-width: 3; }
+.disparo { stroke: #E64040; stroke-width: 3; stroke-dasharray: 8 6; }
+.escudo { fill: none; stroke: #1AD9D9; stroke-width: 6; stroke-linecap: round; }
+.bala { stroke: #1D1F24; stroke-width: 2.5; stroke-dasharray: 6 5; }
+.bala-rebote { stroke: #1AD9D9; stroke-width: 2.5; stroke-dasharray: 6 5; }
+.muro { fill: #8A8E96; }
+.ruta { fill: none; stroke: #E64040; stroke-width: 3; stroke-dasharray: 8 6; }
+.punto { fill: #E64040; }
+.salas rect { fill: #FFFFFF; stroke: #1D1F24; stroke-width: 2; }
+.salas .sala-x { stroke-dasharray: 4 3; }
+.ficha { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; background: #F7F4EC; border: 1px solid #CFC9BB; border-radius: 8px; padding: 20px; }
+.ficha-img { width: 150px; height: auto; filter: grayscale(0.2) contrast(1.05) drop-shadow(0 6px 10px rgba(0,0,0,0.25)); }
+.datos { flex: 1 1 300px; margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 12px 20px; font-size: 16px; line-height: 1.5; }
+.datos dt { font: 500 13px 'IBM Plex Mono', monospace; color: #6A6E76; padding-top: 3px; }
+.datos dd { margin: 0; color: #2E3138; position: relative; }
+/* nombre rayado en negro y escrito encima con crayón rosa */
+.tachado { position: relative; display: inline-block; font: 600 16px 'IBM Plex Mono', monospace; }
+.tachado::after { content: ''; position: absolute; inset: -4px -10px; background: #0B0B0E; transform: rotate(-2deg); border-radius: 3px; filter: url(#rayon); }
+.crayon { font-family: 'Permanent Marker', 'Comic Sans MS', cursive; color: #FF4FD8; text-shadow: 0 0 6px rgba(255,79,216,0.9), 0 0 18px rgba(255,79,216,0.6); filter: url(#crayon); }
+.nombre { position: absolute; left: -6px; top: -14px; font-size: 30px; transform: rotate(-6deg); white-space: nowrap; }
+.nota { font-family: 'Permanent Marker', 'Comic Sans MS', cursive; color: #FF4FD8; text-shadow: 0 0 5px rgba(255,79,216,0.75); filter: url(#crayon); font-size: 19px; line-height: 1.35; margin: 0; }
+.nota-arriba { position: relative; z-index: 2; margin: 14px 10px -6px auto; transform: rotate(3deg); background: rgba(255,240,250,0.0); max-width: 260px; text-align: right; }
+.nota-ficha { margin: 12px 0 8px 180px; transform: rotate(-3deg); }
+.nota-url { margin: 4px 0 16px 24px; transform: rotate(-2deg); }
+.url { margin: 8px 0 14px; font: 18px 'IBM Plex Mono', monospace; background: #1D1F24; color: #B8C7BD; display: inline-block; padding: 10px 14px; border-radius: 6px; }
+.url-clave { color: #5FE3E3; font-weight: 500; }
+.pie { padding-top: 20px; font: 12px 'IBM Plex Mono', monospace; color: #8A8E96; display: flex; flex-direction: column; gap: 6px; }
+.pie p { margin: 0; }
+.corrupto { color: #B9B4A8; letter-spacing: 0.08em; user-select: text; }
+.corrupto b { color: #5A5E66; font-weight: 500; }
+@media (max-width: 720px) {
+  .hoja { margin: 0; padding: 32px 22px; }
+  .nota-arriba { position: static; transform: rotate(2deg); margin: 16px 0 0; text-align: left; }
+  .nota-ficha { margin-left: 0; }
+  .membrete { flex-direction: column; }
+}

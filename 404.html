@@ -6,15 +6,15 @@
 <meta name="theme-color" content="#050608">
 <title>LYO — Señal perdida</title>
 <script>
-  // GitHub Pages distingue mayúsculas: /Terminal, /TERMINAL... terminan aquí y se mandan a la subpágina real
+  // GitHub Pages distingue mayúsculas: /Terminal, /Help, /Ayuda... terminan aquí y se mandan a la subpágina real
   (function () {
     var p = location.pathname;
     var m = p.match(/^\/lyo_web\//i);
     var base = m ? p.slice(0, m[0].length) : '/';
     var resto = p.slice(base.length).replace(/\/+$/, '').toLowerCase();
-    if (resto === 'terminal' || resto === 'terminal/index.html') {
-      location.replace('/LYO_Web/terminal/');
-    }
+    var rutas = { 'terminal': 'terminal/', 'help': 'help/', 'ayuda': 'help/' };
+    var clave = resto.replace(/\/index\.html$/, '');
+    if (rutas[clave]) location.replace('/LYO_Web/' + rutas[clave]);
   })();
 </script>
 <style>

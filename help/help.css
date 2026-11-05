@@ -39,12 +39,12 @@ figcaption { margin-top: 6px; font-size: 14px; color: #4A4E56; }
 .datos { flex: 1 1 300px; margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 12px 20px; font-size: 16px; line-height: 1.5; }
 .datos dt { font: 500 13px 'IBM Plex Mono', monospace; color: #6A6E76; padding-top: 3px; }
 .datos dd { margin: 0; color: #2E3138; position: relative; }
-/* nombre rayado en negro y escrito encima con crayón rosa */
+/* nombre oficial rayado en negro y, encima, "Neon" escrito con crayón rosa */
 .tachado { position: relative; display: inline-block; font: 600 16px 'IBM Plex Mono', monospace; }
 .tachado::after { content: ''; position: absolute; inset: -4px -10px; background: #0B0B0E; transform: rotate(-2deg); border-radius: 3px; filter: url(#rayon); }
-.crayon { font-family: 'Permanent Marker', 'Comic Sans MS', cursive; color: #FF4FD8; text-shadow: 0 0 6px rgba(255,79,216,0.9), 0 0 18px rgba(255,79,216,0.6); filter: url(#crayon); }
+.crayon { font-family: 'Permanent Marker', 'Comic Sans MS', cursive; color: #E8559F; filter: url(#crayon); }
 .nombre { position: absolute; left: -6px; top: -14px; font-size: 30px; transform: rotate(-6deg); white-space: nowrap; }
-.nota { font-family: 'Permanent Marker', 'Comic Sans MS', cursive; color: #FF4FD8; text-shadow: 0 0 5px rgba(255,79,216,0.75); filter: url(#crayon); font-size: 19px; line-height: 1.35; margin: 0; }
+.nota { font-family: 'Permanent Marker', 'Comic Sans MS', cursive; color: #E8559F; filter: url(#crayon); font-size: 19px; line-height: 1.35; margin: 0; }
 .nota-arriba { position: relative; z-index: 2; margin: 14px 10px -6px auto; transform: rotate(3deg); background: rgba(255,240,250,0.0); max-width: 260px; text-align: right; }
 .nota-ficha { margin: 12px 0 8px 180px; transform: rotate(-3deg); }
 .nota-url { margin: 4px 0 16px 24px; transform: rotate(-2deg); }

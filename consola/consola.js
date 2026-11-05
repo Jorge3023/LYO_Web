@@ -156,10 +156,24 @@ class Consola {
   }
 
   // ---------- preguntas ----------
+  // De "Mi nombre es alex", "hola, me llamo Alex García", "soy Alex :)" o "my name is Alex" se queda solo con el nombre
+  nombreDe(v) {
+    let t = v.replace(/[^\p{L}\p{N}\s'-]/gu, ' ').replace(/\s+/g, ' ').trim();
+    const frases = /^(hola|buenas|buenos dias|buenas tardes|buenas noches|hey|hi|hello|ok|pues|este|bueno|ah|eh|y)\s+|^(mi nombre es|mi nombre|me llamo|me llaman|me dicen|me puedes llamar|puedes llamarme|llamame|llámame|yo soy|soy|yo|nombre|el nombre es|my name is|my name|name is|i am|i'm|im|call me|its|it's)\s+/i;
+    for (let i = 0; i < 4; i++) {
+      const antes = t;
+      t = t.replace(frases, '').trim();
+      if (t === antes) break;
+    }
+    t = t.replace(/\s+(y|and|pero|but|de|del)\s.*$/i, '').trim(); // "Alex y tú?" -> "Alex"
+    const palabras = t.split(' ').filter(Boolean).slice(0, 2);
+    const nombre = palabras.map((p) => p.charAt(0).toLocaleUpperCase('es') + p.slice(1)).join(' ').slice(0, 24);
+    return nombre || v.trim().slice(0, 24);
+  }
   async pedirNombre() {
     for (;;) {
-      const v = (await this.pedir('IDENTIFÍCATE>')).trim().slice(0, 24);
-      if (v) { this.agregar('tu', 'IDENTIFÍCATE> ' + v); return v; }
+      const v = (await this.pedir('IDENTIFÍCATE>')).trim();
+      if (v) { this.agregar('tu', 'IDENTIFÍCATE> ' + v); return this.nombreDe(v); }
       this.agregar('err', 'Se requiere un nombre. Cualquiera.');
     }
   }

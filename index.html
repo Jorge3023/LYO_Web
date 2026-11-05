@@ -154,10 +154,11 @@ Ver tráiler [VIDEO]
 <label for="comentario" style="font-size:15px;font-weight:500">Escribe un comentario</label>
 <textarea id="comentario" rows="4" style="background:#14141C;color:#E8ECF2;border:1px solid #44445A;border-radius:10px;padding:14px 16px;font-family:inherit;font-size:16px;resize:vertical"></textarea>
 <div style="display:flex;justify-content:flex-end">
-<button type="button" class="btn-a" style="background:var(--acento);color:#0B0B10;border:0;font-family:inherit;font-weight:800;font-size:16px;padding:12px 24px;border-radius:999px;cursor:pointer">Publicar</button>
+<button id="publicar" type="button" class="btn-a" style="background:var(--acento);color:#0B0B10;border:0;font-family:inherit;font-weight:800;font-size:16px;padding:12px 24px;border-radius:999px;cursor:pointer">Publicar</button>
 </div>
 </div>
-<p style="margin:0;font-size:16px;color:#9AA3B2">Aún no hay comentarios. Sé el primero.</p>
+<p id="sin-comentarios" style="margin:0;font-size:16px;color:#9AA3B2">Aún no hay comentarios. Sé el primero.</p>
+<div id="lista-comentarios" aria-live="polite" class="comentarios"></div>
 </section>
 </main>
 
@@ -233,7 +234,8 @@ Ver tráiler [VIDEO]
 <div data-paso="4" hidden>Voz de Sujeto 048 desactivada</div>
 <div data-paso="5" hidden>C:\LYO\sujeto_048&gt;texto.exe</div>
 <div data-paso="5" hidden>Modo de texto activo</div>
-<div data-paso="6" hidden>C:\LYO\sujeto_048&gt;<span class="blink">_</span></div>
+<div id="cmd-extra"></div>
+<form id="cmd-form" data-paso="6" hidden><label for="cmd-in">C:\LYO\sujeto_048&gt;</label><input id="cmd-in" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Comando"></form>
 </div>
 </div>
 </div>

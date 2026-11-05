@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#070809">
+<meta name="robots" content="noindex">
+<title>LYO — Consola</title>
+<link rel="icon" href="../assets/caras/estatica.webp" type="image/webp">
+<link rel="stylesheet" href="consola.css">
+</head>
+<body>
+<div id="pantalla" class="crt-flick">
+<div aria-hidden="true" class="crt-scan capa-scan"></div>
+<div aria-hidden="true" class="capa-vineta"></div>
+<main>
+<div id="log" role="log" aria-live="polite" aria-label="Consola"></div>
+<form id="form" hidden>
+<label id="etiqueta" for="entrada"></label>
+<input id="entrada" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40">
+</form>
+<p id="salir" hidden><a href="../">[ desconectar ]</a></p>
+<div id="fin-consola"></div>
+</main>
+</div>
+<button id="ir-abajo" type="button" hidden>&#9660; nuevas líneas</button>
+<script src="consola.js"></script>
+</body>
+</html>

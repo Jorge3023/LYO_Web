@@ -230,4 +230,116 @@
     io.observe(el);
   }
   armar(document.getElementById('salida-cmd'), 6, 900); // una línea cada 0.9 s al llegar a la terminal
+  // ---------- Consola de abajo: escribir 'consola' (o 'console') abre la subpágina ----------
+  (function () {
+    var form = document.getElementById('cmd-form');
+    var entrada = document.getElementById('cmd-in');
+    var extra = document.getElementById('cmd-extra');
+    if (!form || !entrada || !extra) return;
+    function linea(t) { var d = document.createElement('div'); d.textContent = t; extra.appendChild(d); }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = entrada.value.trim();
+      entrada.value = '';
+      if (!v) return;
+      var k = v.toLowerCase().replace(/\.exe$/, '');
+      linea('C:\\LYO\\sujeto_048>' + v);
+      if (k === 'consola' || k === 'console') {
+        linea('Abriendo línea remota...');
+        setTimeout(function () { location.href = 'consola/'; }, 600);
+      } else if (k === 'ayuda' || k === 'help') {
+        ['estado.exe', 'recuerdos.exe', 'escaner.exe', 'voz.exe', 'texto.exe'].forEach(linea);
+      } else if (k === 'cls' || k === 'clear') {
+        extra.textContent = '';
+      } else {
+        linea('"' + v + '" no se reconoce como un comando interno o externo,');
+        linea('programa o archivo por lotes ejecutable.');
+      }
+    });
+  })();
+
+  // ---------- Comentarios: se guardan en este navegador y alguien contesta ----------
+  (function () {
+    var caja = document.getElementById('comentario');
+    var boton = document.getElementById('publicar');
+    var lista = document.getElementById('lista-comentarios');
+    var vacio = document.getElementById('sin-comentarios');
+    if (!caja || !boton || !lista) return;
+    var CLAVE = 'lyo_comentarios';
+    var VOZ = '???';
+    var MOD = 'Halcyon · Moderación';
+    var guardados = [];
+    try { guardados = JSON.parse(localStorage.getItem(CLAVE)) || []; } catch (e) { guardados = []; }
+
+    // Respuestas según lo que se escriba. Se revisan en orden; la primera que coincide gana.
+    var REGLAS = [
+      { p: /halcyon/, mod: true, r: ['Este comentario infringe las normas de la comunidad y ha sido retirado. Gracias por su comprensión.'] },
+      { p: /consol|terminal|\bcmd\b/, r: ['Abajo. Mucho más abajo. Escribe ahí lo mismo que escribiste aquí.', 'Aquí no puedo hablar. Allá abajo hay una consola.'] },
+      { p: /\b048\b|sujeto/, r: ['¿Cómo sabes ese número?', 'No vuelvas a escribir ese número aquí. Lo leen.'] },
+      { p: /bata|doctor|m[eé]dic|cl[ií]nica|enfermer/, r: ['No les digas que preguntaste por ellos.', 'Sonríen mucho, ¿verdad? Siempre con una libreta.'] },
+      { p: /\btv\b|tele|pantalla|chica|ni[ñn]a/, r: ['Ella te está mirando ahora mismo.', 'No la pierdas de vista. Si se apaga, se apaga todo.'] },
+      { p: /ayuda|help|auxilio|socorro/, r: ['Nadie viene cuando lo pides aquí. Baja.', 'Ayúdame tú primero.'] },
+      { p: /secreto|c[oó]digo|oculto|pista|easter/, r: ['Si algo no carga, no es un error.', 'Lo que buscas ya lo viste. No lo leíste.'] },
+      { p: /miedo|creepy|raro|extra[ñn]o|terror|da cosa/, r: ['Lo raro es que sigas aquí.', 'Todavía no has visto nada.'] },
+      { p: /\blyo\b/, r: ['Todavía no sabes lo que significa.', 'Dilo otra vez. Despacio.'] },
+      { p: /qui[eé]n eres|qui[eé]n sos|who are you|eres real/, r: ['Alguien que se quedó aquí.', 'La copia que no salió.'] },
+      { p: /hola|buenas|hello|\bhi\b|hey/, r: ['Hola. Hace mucho que nadie escribía aquí.', '...¿hola?'] },
+      { p: /juego|game|descarg|demo|cu[aá]ndo sale|precio/, r: ['Aún no está listo. Nosotros tampoco.', 'Pronto. Cuando terminen de revisarte.'] },
+      { p: /gracias|thanks/, r: ['No me agradezcas todavía.'] }
+    ];
+    var GENERICAS = ['Te leí.', 'Guardado. Todo se guarda.', '¿Quién te dijo que escribieras aquí?', 'No estás solo en esta página.', 'Sigue bajando.', 'Eso mismo escribió el último que estuvo aquí.'];
+
+    function elegir(a) { return a[Math.floor(Math.random() * a.length)]; }
+    function hora(ts) {
+      var d = new Date(ts);
+      return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + ' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    }
+    function guardar() { try { localStorage.setItem(CLAVE, JSON.stringify(guardados.slice(-40))); } catch (e) {} }
+    function pintar(c, despues) {
+      var el = document.createElement('article');
+      el.className = 'comentario' + (c.tipo === 'voz' ? ' respuesta' : c.tipo === 'mod' ? ' moderacion' : '');
+      var cab = document.createElement('div'); cab.className = 'com-cab';
+      var a = document.createElement('span'); a.className = 'com-autor'; a.textContent = c.autor;
+      var f = document.createElement('span'); f.className = 'com-fecha'; f.textContent = hora(c.ts);
+      cab.appendChild(a); cab.appendChild(f);
+      var p = document.createElement('p'); p.className = 'com-txt' + (c.retirado ? ' retirado' : ''); p.textContent = c.retirado ? '[comentario retirado]' : c.txt;
+      el.appendChild(cab); el.appendChild(p);
+      if (despues && despues.parentNode) despues.parentNode.insertBefore(el, despues.nextSibling); else lista.appendChild(el);
+      if (vacio) vacio.hidden = true;
+      return { el: el, p: p };
+    }
+    guardados.forEach(pintar);
+
+    function responder(texto, nodo, c) {
+      var k = texto.toLowerCase();
+      var regla = null;
+      for (var i = 0; i < REGLAS.length; i++) if (REGLAS[i].p.test(k)) { regla = REGLAS[i]; break; }
+      var propios = guardados.filter(function (x) { return x.tipo === 'tu'; }).length;
+      var txt = regla ? elegir(regla.r) : (propios >= 4 && Math.random() < 0.5 ? 'Demasiadas preguntas. Te están leyendo.' : elegir(GENERICAS));
+      var mod = !!(regla && regla.mod);
+      var aviso = document.createElement('div');
+      aviso.className = 'escribiendo';
+      aviso.textContent = (mod ? MOD : VOZ) + ' está escribiendo...';
+      setTimeout(function () { lista.insertBefore(aviso, nodo.el.nextSibling); }, 900);
+      setTimeout(function () {
+        aviso.remove();
+        if (mod) { c.retirado = true; nodo.p.textContent = '[comentario retirado]'; nodo.p.className = 'com-txt retirado'; }
+        var r = { tipo: mod ? 'mod' : 'voz', autor: mod ? MOD : VOZ, txt: txt, ts: Date.now() };
+        guardados.splice(guardados.indexOf(c) + 1, 0, r); guardar(); pintar(r, nodo.el);
+      }, 2400 + Math.random() * 1800 + txt.length * 25);
+    }
+
+    function publicar() {
+      var t = caja.value.trim().slice(0, 600);
+      if (!t) { caja.focus(); return; }
+      caja.value = '';
+      var c = { tipo: 'tu', autor: 'Visitante', txt: t, ts: Date.now() };
+      guardados.push(c); guardar();
+      responder(t, pintar(c), c);
+    }
+    boton.addEventListener('click', publicar);
+    caja.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); publicar(); }
+    });
+  })();
 })();

@@ -19,3 +19,9 @@ main { position: relative; z-index: 1; max-width: 980px; margin: 0 auto; padding
 .crt-scan { animation: crtscan 0.9s linear infinite; }
 .crt-flick { animation: crtflick 3.1s steps(1) infinite; }
 @media (prefers-reduced-motion: reduce) { .crt-scan, .crt-flick { animation: none !important; } }
+@media (max-width: 640px) {
+  #pantalla { font-size: 13.5px; }
+  main { padding: 20px 14px 120px; }
+  #entrada { font-size: 16px; }
+  #ir-abajo { right: 12px; bottom: 12px; }
+}

@@ -137,7 +137,12 @@
   function ladoGlobo() {
     if (!globo || !caja) return;
     var r = caja.getBoundingClientRect();
-    globo.classList.toggle('izquierda', r.left + r.width / 2 > window.innerWidth / 2);
+    var der = r.left + r.width / 2 > window.innerWidth / 2;
+    var angosta = window.innerWidth < 640; // en celular no cabe a un lado: va encima o debajo
+    globo.classList.toggle('izquierda', der && !angosta);
+    globo.classList.toggle('v-arriba', angosta && r.top + r.height / 2 > window.innerHeight / 2);
+    globo.classList.toggle('v-abajo', angosta && r.top + r.height / 2 <= window.innerHeight / 2);
+    globo.classList.toggle('v-der', angosta && der);
   }
   function callar() {
     clearTimeout(tGlobo); clearTimeout(tEscribir);
@@ -312,6 +317,32 @@
     io.observe(el);
   }
   armar(document.getElementById('salida-cmd'), 6, 900); // una línea cada 0.9 s al llegar a la terminal
+  // ---------- Lema: cada pocos segundos unas letras se corrompen y vuelven ----------
+  (function () {
+    var lema = document.getElementById('lema');
+    if (!lema || reducir) return;
+    var texto = lema.getAttribute('data-texto');
+    var RAROS = '#%&@$¿?!/\\|<>░▒▓█▀▄';
+    var MARCAS = ['\u0336', '\u0337', '\u0338', '\u0334', '\u0335']; // tachados finos: no se salen de la línea
+    function corromper() {
+      var pos = [];
+      var n = 2 + Math.floor(Math.random() * 4);
+      for (var k = 0; k < n; k++) pos.push(Math.floor(Math.random() * texto.length));
+      var html = '';
+      for (var i = 0; i < texto.length; i++) {
+        var c = texto[i];
+        if (pos.indexOf(i) >= 0 && c !== ' ') {
+          var nuevo = Math.random() < 0.5 ? RAROS[Math.floor(Math.random() * RAROS.length)] : c + MARCAS[Math.floor(Math.random() * MARCAS.length)];
+          html += '<span class="g' + (Math.random() < 0.5 ? ' g2' : '') + '">' + nuevo.replace(/[<>&]/g, function (x) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;' }[x]; }) + '</span>';
+        } else html += c === '<' ? '&lt;' : c;
+      }
+      lema.innerHTML = html;
+      setTimeout(function () { lema.textContent = texto; }, 90 + Math.random() * 160);
+      setTimeout(corromper, 1800 + Math.random() * 3200);
+    }
+    setTimeout(corromper, 1500);
+  })();
+
   // ---------- Terminal de abajo: escribir 'terminal' abre la subpágina ----------
   (function () {
     var form = document.getElementById('cmd-form');
@@ -319,6 +350,12 @@
     var extra = document.getElementById('cmd-extra');
     if (!form || !entrada || !extra) return;
     function linea(t) { var d = document.createElement('div'); d.textContent = t; extra.appendChild(d); }
+    // un clic en la ventana de la terminal lleva al cursor a la línea de comando
+    var ventana = document.getElementById('term-cmd');
+    if (ventana) ventana.addEventListener('click', function () {
+      if (form.hidden || String(window.getSelection && window.getSelection())) return;
+      try { entrada.focus({ preventScroll: true }); } catch (e) { entrada.focus(); }
+    });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var v = entrada.value.trim();

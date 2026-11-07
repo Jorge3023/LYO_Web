@@ -50,9 +50,9 @@
 
 <!-- Barra superior -->
 <header style="background:rgba(11,11,16,0.82);border-bottom:1px solid #2C2C3A">
-<div style="max-width:1160px;margin:0 auto;padding:14px 32px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between">
+<div class="r-barra" style="max-width:1160px;margin:0 auto;padding:14px 32px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between">
 <a href="#inicio" class="nav-a" style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-weight:500;font-size:20px;letter-spacing:0.3em;color:#E0EBE6">LYO</a>
-<nav aria-label="Principal" style="display:flex;flex-wrap:wrap;gap:8px 24px;font-size:15px;font-weight:500">
+<nav class="r-nav" aria-label="Principal" style="display:flex;flex-wrap:wrap;gap:8px 24px;font-size:15px;font-weight:500">
 <a href="#acerca" class="nav-a">Acerca de</a>
 <a href="#archivos" class="nav-a">Archivos</a>
 <a href="#devlog" class="nav-a">Devlog</a>
@@ -62,19 +62,19 @@
 </header>
 
 <!-- Título: igual que en el menú, con las copias roja y cian -->
-<section id="inicio" style="max-width:1160px;margin:0 auto;padding:96px 32px 40px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center">
+<section id="inicio" class="r-inicio" style="max-width:1160px;margin:0 auto;padding:96px 32px 40px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center">
 <h1 aria-label="LYO" style="position:relative;margin:0;font-family:'IBM Plex Mono',ui-monospace,monospace;font-weight:500;font-size:clamp(72px,15vw,200px);line-height:1;white-space:nowrap">
 <span aria-hidden="true" class="tred" style="position:absolute;left:0;top:0;color:rgba(230,38,38,0.55)">L Y O</span>
 <span aria-hidden="true" class="tcyan" style="position:absolute;left:0;top:0;color:rgba(26,217,217,0.55)">L Y O</span>
 <span aria-hidden="true" class="twhite" style="position:relative;color:#E0EBE6">L Y O</span>
 </h1>
-<p style="margin:0;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:18px;line-height:1.5;color:#B8C7BD;max-width:34em;text-wrap:pretty">Ḓ̸̝͙̞͖̱̟̤̲̀̐͗͗̇̌̈́́͘ͅͅo̷̡̖͚͓̟͙̊͐̉̀͛̆͒́̈́̎̕̕ņ̶̪͕̠͓̣̟̰̙̩̪̣̠̗̙̑͆̓̑̆͝d̸̨͚̫͎̜̼̲͇̬̘͖̥̠̥͇̅͗̒̋͊̈́̊͊͆̚͝ḙ̶̢̬͙̫̙̊ ̶̡̡̪̜͚̭̖͔̭͑ͅs̷̩̪͇̀̿̑̀̕͘͘̕ĕ̵̢̨̤̫̀̾̀̈̊̏̕ ̶̢̨̙͚̘̟̮̖͉̗̇ṣ̵̛͔̬̖͈͔̻̩̞̙͔̾͋͆͋̈́̎ȗ̸͔̅͝͠p̷̛̯͙̗̳̣͍̪̭̿̎̽̃̋͒́͑̆̚o̵̡͈̥̘͎̝̙͙͕̮͕̬̝̘̰͑͛̐̎̋̍̏̊̕̚͝ń̶̗̝̱͉̙̱è̸̡͓͚͉̩̓̔͑͑͐̓̍̽̍͑ͅ ̴̡̼͎̈̒̋̓̎ͅq̴̢͙̳̬̻̯̣͓̼̳͖̥͈̎̔u̷̺̪̻̗̮͚̺͓̲̻̙͙̹̫̽̚̚e̷͉̳͔̠̜͈͉͐̔̊̐̓̿͐͌͌̈́̀̊̚͘͝ ̵̨̢̨̪̝̻̈́̌̈̋̈́̊͝e̷͙͚̩̤͎͙̥̝͍͌̈͒̒͛͗͠ṣ̶̉̆͜t̵̢̲̖̫̲̓̊̾̀̈́͘͘o̷͍̊̈́̒̿̅͊̄̎y̵̙͖̮͉̤̜̍̋̏̀̊͂̄?</p>
+<p id="lema" class="lema" aria-label="¿Dónde se supone que estoy?" data-texto="¿Dónde se supone que estoy?">¿Dónde se supone que estoy?</p>
 </section>
 
 <!-- Cuerpo -->
-<div style="max-width:1160px;margin:0 auto;padding:32px 32px 96px;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+<div class="r-cuerpo" style="max-width:1160px;margin:0 auto;padding:32px 32px 96px;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
 
-<main style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:56px">
+<main class="r-main" style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:56px">
 
 <!-- Tráiler y capturas -->
 <section aria-label="Tráiler y capturas" style="display:flex;flex-direction:column;gap:12px">
@@ -163,7 +163,7 @@ Ver tráiler [VIDEO]
 </main>
 
 <!-- Barra lateral -->
-<aside style="flex:1 1 320px;max-width:380px;min-width:0;display:flex;flex-direction:column;gap:24px">
+<aside class="r-aside" style="flex:1 1 320px;max-width:380px;min-width:0;display:flex;flex-direction:column;gap:24px">
 
 <section aria-label="Descarga" style="background:rgba(20,20,28,0.94);border:1px solid #2C2C3A;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:18px">
 <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
@@ -200,7 +200,7 @@ Ver tráiler [VIDEO]
 
 <!-- Pie -->
 <footer style="border-top:1px solid #2C2C3A;background:rgba(5,6,8,0.8)">
-<div style="max-width:1160px;margin:0 auto;padding:32px 32px 120px;display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:0.04em;color:#9AA3B2">
+<div class="r-pie" style="max-width:1160px;margin:0 auto;padding:32px 32px 120px;display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:0.04em;color:#9AA3B2">
 <span>© [AÑO] LYO</span>
 <span>Si algo no carga, no es un error. [CÓDIGO OCULTO]</span>
 </div>
@@ -214,7 +214,7 @@ Ver tráiler [VIDEO]
 <div id="zona-estatica" aria-hidden="true"><canvas id="estatica" width="192" height="108"></canvas></div>
 
 <!-- Terminal -->
-<section aria-label="Terminal" style="background:#050608;padding:0 32px 200px">
+<section aria-label="Terminal" class="r-term" style="background:#050608;padding:0 32px 200px">
 <div style="max-width:880px;margin:0 auto">
 <!-- Terminal (estilo CMD) -->
 <div id="term-cmd" class="cmd">
@@ -235,7 +235,7 @@ Ver tráiler [VIDEO]
 <div data-paso="5" hidden>C:\LYO\sujeto_048&gt;texto.exe</div>
 <div data-paso="5" hidden>Modo de texto activo</div>
 <div id="cmd-extra"></div>
-<form id="cmd-form" data-paso="6" hidden><label for="cmd-in">C:\LYO\sujeto_048&gt;</label><input id="cmd-in" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Comando"></form>
+<form id="cmd-form" data-paso="6" hidden><label for="cmd-in">C:\LYO\sujeto_048&gt;</label><span class="cmd-campo"><input id="cmd-in" type="text" placeholder=" " autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Comando"><span class="cmd-cursor blink" aria-hidden="true">_</span></span></form>
 </div>
 </div>
 </div>

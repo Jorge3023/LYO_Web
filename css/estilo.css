@@ -104,3 +104,49 @@ a:hover { color: #FFFFFF; }
 .globo.grande p { font-size: 22px; font-weight: 700; }
 .globo-x { position: absolute; top: 3px; right: 5px; width: 18px; height: 18px; padding: 0; border: 0; background: transparent; color: #000000; font: 700 15px/18px Tahoma, Verdana, sans-serif; cursor: pointer; }
 .globo-x:hover { color: #B00000; }
+
+/* ---------- Celular y tablet ---------- */
+/* El globo encima o debajo de la TV (lo decide el JS en pantallas angostas) */
+.globo.v-arriba, .globo.v-abajo { left: 0; right: auto; top: auto; bottom: auto; max-width: min(260px, calc(100vw - 24px)); }
+.globo.v-arriba { bottom: calc(100% + 12px); }
+.globo.v-abajo { top: calc(100% + 12px); }
+.globo.v-der { left: auto; right: 0; }
+.globo.v-arriba::before, .globo.v-arriba::after, .globo.v-abajo::before, .globo.v-abajo::after { top: auto; left: 26px; right: auto; margin: 0; }
+.globo.v-der::before, .globo.v-der::after { left: auto; right: 26px; }
+.globo.v-arriba::before { bottom: -12px; border-width: 12px 7px 0 7px; border-color: #000000 transparent transparent transparent; }
+.globo.v-arriba::after { bottom: -10px; border-width: 11px 6px 0 6px; border-color: #FFFFE1 transparent transparent transparent; margin: 0 1px; }
+.globo.v-abajo::before { top: -12px; border-width: 0 7px 12px 7px; border-color: transparent transparent #000000 transparent; }
+.globo.v-abajo::after { top: -10px; border-width: 0 6px 11px 6px; border-color: transparent transparent #FFFFE1 transparent; margin: 0 1px; }
+
+@media (max-width: 900px) {
+  .r-cuerpo { gap: 40px !important; }
+  .r-aside { max-width: none !important; }
+}
+@media (max-width: 640px) {
+  .r-barra { padding: 12px 18px !important; gap: 8px 16px !important; }
+  .r-nav { gap: 6px 16px !important; font-size: 14px !important; }
+  .r-inicio { padding: 48px 18px 24px !important; gap: 16px !important; }
+  .r-cuerpo { padding: 20px 18px 72px !important; gap: 32px !important; }
+  .r-main { gap: 44px !important; }
+  .r-main h2 { font-size: 24px !important; }
+  .r-pie { padding: 24px 18px 80px !important; }
+  .r-term { padding: 0 12px 160px !important; }
+  .cmd-barra { font-size: 11px; padding: 7px 10px; }
+  .cmd-cuerpo { font-size: 12.5px; padding: 12px 12px 20px; min-height: 260px; }
+  .cmd-cuerpo div, #cmd-form { white-space: pre-wrap; overflow-wrap: break-word; }
+  #cmd-in, #comentario { font-size: 16px; } /* menos de 16px hace que el celular haga zoom al escribir */
+  .comentario.respuesta, .comentario.moderacion, .escribiendo { margin-left: 14px; }
+  /* la TV más chica y, si nadie la ha movido, abajo a la derecha para no tapar el menú */
+  .tv { width: 68px; left: calc(100vw - 80px); top: calc(100vh - 96px); }
+  .globo.grande p { font-size: 18px; }
+}
+
+/* Lema: legible, con letras que se corrompen un instante (sin texto Zalgo permanente) */
+.lema { margin: 0; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 18px; line-height: 1.5; color: #B8C7BD; max-width: 34em; position: relative; }
+.lema .g { display: inline-block; color: #E64040; text-shadow: 2px 0 rgba(26,217,217,0.8); transform: translateY(-1px); }
+.lema .g2 { color: #1AD9D9; text-shadow: -2px 0 rgba(230,38,38,0.8); transform: translateY(1px); }
+/* Terminal de abajo: cursor parpadeante mientras no se esté escribiendo */
+.cmd-campo { position: relative; flex: 1; min-width: 0; display: flex; }
+.cmd-cursor { position: absolute; left: 0; top: 0; pointer-events: none; display: none; }
+#cmd-in:placeholder-shown:not(:focus) + .cmd-cursor { display: inline; }
+.cmd { cursor: text; }

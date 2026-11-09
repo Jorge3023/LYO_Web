@@ -150,3 +150,9 @@ a:hover { color: #FFFFFF; }
 .cmd-cursor { position: absolute; left: 0; top: 0; pointer-events: none; display: none; }
 #cmd-in:placeholder-shown:not(:focus) + .cmd-cursor { display: inline; }
 .cmd { cursor: text; }
+
+.lema { min-height: 1.5em; }
+@keyframes lemasacude { 0% { transform: translate(0, 0); } 25% { transform: translate(-3px, 1px); } 50% { transform: translate(3px, -1px); } 75% { transform: translate(-2px, 0); } 100% { transform: translate(0, 0); } }
+.lema.sacudir { animation: lemasacude 0.12s steps(2) 2; }
+.lema.total { animation: lemasacude 0.1s steps(2) infinite; text-shadow: 3px 0 rgba(230,38,38,0.7), -3px 0 rgba(26,217,217,0.7); }
+@media (max-width: 640px) { .lema { min-height: 3em; font-size: 16px !important; } }

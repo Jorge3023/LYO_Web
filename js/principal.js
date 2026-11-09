@@ -317,30 +317,84 @@
     io.observe(el);
   }
   armar(document.getElementById('salida-cmd'), 6, 900); // una línea cada 0.9 s al llegar a la terminal
-  // ---------- Lema: cada pocos segundos unas letras se corrompen y vuelven ----------
+  // ---------- Lema: letras que se corrompen seguido y, cada 10 s, un glitch completo que cambia la frase ----------
   (function () {
     var lema = document.getElementById('lema');
-    if (!lema || reducir) return;
-    var texto = lema.getAttribute('data-texto');
-    var RAROS = '#%&@$¿?!/\\|<>░▒▓█▀▄';
-    var MARCAS = ['\u0336', '\u0337', '\u0338', '\u0334', '\u0335']; // tachados finos: no se salen de la línea
-    function corromper() {
-      var pos = [];
-      var n = 2 + Math.floor(Math.random() * 4);
-      for (var k = 0; k < n; k++) pos.push(Math.floor(Math.random() * texto.length));
-      var html = '';
-      for (var i = 0; i < texto.length; i++) {
-        var c = texto[i];
-        if (pos.indexOf(i) >= 0 && c !== ' ') {
-          var nuevo = Math.random() < 0.5 ? RAROS[Math.floor(Math.random() * RAROS.length)] : c + MARCAS[Math.floor(Math.random() * MARCAS.length)];
-          html += '<span class="g' + (Math.random() < 0.5 ? ' g2' : '') + '">' + nuevo.replace(/[<>&]/g, function (x) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;' }[x]; }) + '</span>';
-        } else html += c === '<' ? '&lt;' : c;
-      }
-      lema.innerHTML = html;
-      setTimeout(function () { lema.textContent = texto; }, 90 + Math.random() * 160);
-      setTimeout(corromper, 1800 + Math.random() * 3200);
+    if (!lema) return;
+    var FRASES = [
+      '¿Dónde se supone que estoy?',
+      'No recuerdo cómo llegué aquí.',
+      '¿Alguien más puede verme?',
+      'Esta no es mi voz.',
+      'Firmé algo. No recuerdo qué.',
+      'Todo se siente copiado.',
+      '¿Cuánto tiempo llevo dormido?',
+      'Ella dice que todo está bien.',
+      'Sigue bajando.'
+    ];
+    var actual = 0;
+    var texto = FRASES[0];
+    if (reducir) return; // sin animaciones: se queda la primera frase
+    var RAROS = '#%&@$¿?!/\\|<>░▒▓█▀▄¤§¶∆≠';
+    var MARCAS = ['̶', '̷', '̸', '̴', '̵', '̲', '̅'];
+    var ocupado = false;
+    function esc(c) { return c === '<' ? '&lt;' : c === '>' ? '&gt;' : c === '&' ? '&amp;' : c; }
+    function raro() { return RAROS[Math.floor(Math.random() * RAROS.length)]; }
+    function letraRota(c) {
+      var r = Math.random();
+      var nuevo = r < 0.45 ? raro() : r < 0.8 ? c + MARCAS[Math.floor(Math.random() * MARCAS.length)] : c.toUpperCase() + MARCAS[Math.floor(Math.random() * MARCAS.length)];
+      return '<span class="g' + (Math.random() < 0.5 ? ' g2' : '') + '">' + esc(nuevo) + '</span>';
     }
-    setTimeout(corromper, 1500);
+    function pintar(t, prob) { // prob: qué parte de las letras se rompe
+      var html = '';
+      for (var i = 0; i < t.length; i++) html += (t[i] !== ' ' && Math.random() < prob) ? letraRota(t[i]) : esc(t[i]);
+      lema.innerHTML = html;
+    }
+    // glitch frecuente: varias letras rotas, a veces en ráfagas de 2 o 3 cuadros
+    function chispa() {
+      if (!ocupado) {
+        var cuadros = 1 + Math.floor(Math.random() * 3);
+        var k = 0;
+        (function cuadro() {
+          if (ocupado) return;
+          pintar(texto, 0.12 + Math.random() * 0.18);
+          lema.classList.toggle('sacudir', Math.random() < 0.5);
+          if (++k < cuadros) setTimeout(cuadro, 60 + Math.random() * 60);
+          else setTimeout(function () { if (!ocupado) { lema.textContent = texto; lema.classList.remove('sacudir'); } }, 80 + Math.random() * 140);
+        })();
+      }
+      setTimeout(chispa, 700 + Math.random() * 1500);
+    }
+    // glitch completo: todo se rompe, y la frase nueva aparece de izquierda a derecha
+    function cambiar() {
+      ocupado = true;
+      lema.classList.add('total');
+      var siguiente = (actual + 1 + Math.floor(Math.random() * (FRASES.length - 1))) % FRASES.length;
+      var nueva = FRASES[siguiente];
+      var paso = 0, PASOS_RUIDO = 8, PASOS_REVELAR = 14;
+      (function cuadro() {
+        if (paso < PASOS_RUIDO) {
+          var largo = Math.max(texto.length, nueva.length);
+          var t = '';
+          for (var i = 0; i < largo; i++) t += (texto[i] || ' ');
+          pintar(t, 0.6 + paso * 0.05);
+        } else {
+          var hechos = Math.ceil(nueva.length * (paso - PASOS_RUIDO + 1) / PASOS_REVELAR);
+          var html = '';
+          for (var i = 0; i < nueva.length; i++) html += i < hechos ? esc(nueva[i]) : (nueva[i] === ' ' ? ' ' : letraRota(nueva[i]));
+          lema.innerHTML = html;
+        }
+        paso++;
+        if (paso < PASOS_RUIDO + PASOS_REVELAR) { setTimeout(cuadro, 55); return; }
+        actual = siguiente; texto = nueva;
+        lema.textContent = texto;
+        lema.setAttribute('aria-label', texto);
+        lema.classList.remove('total');
+        ocupado = false;
+      })();
+    }
+    setTimeout(chispa, 1200);
+    setInterval(cambiar, 10000);
   })();
 
   // ---------- Terminal de abajo: escribir 'terminal' abre la subpágina ----------

@@ -325,12 +325,17 @@
       '¿Dónde se supone que estoy?',
       'No recuerdo cómo llegué aquí.',
       '¿Alguien más puede verme?',
-      'Esta no es mi voz.',
-      'Firmé algo. No recuerdo qué.',
-      'Todo se siente copiado.',
+      'No tengo boca',
+      'debo gritar?',
+      'Que se supone que es este lugar?',
+      'Todo se siente diferente.',
       '¿Cuánto tiempo llevo dormido?',
+      '¿Cuánto tiempo llevo aqui?',
       'Ella dice que todo está bien.',
-      'Sigue bajando.'
+      'Sigue bajando.',
+      '/terminal',
+      'darker than dark',
+      '...'
     ];
     var actual = 0;
     var texto = FRASES[0];
